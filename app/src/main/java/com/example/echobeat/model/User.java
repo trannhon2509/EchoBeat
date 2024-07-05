@@ -5,17 +5,35 @@ public class User {
     private String username;
     private String email;
     private String profilePicture;
-    private String password;
+    private int roleId;
+    private String googleId;
 
     // Constructors, getters, and setters
     public User() {}
 
-    public User(int userId, String username, String email, String profilePicture, String password) {
+    public User(int userId, String username, String email, String profilePicture, int roleId, String googleId) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.profilePicture = profilePicture;
-        this.password = password;
+        this.roleId = roleId;
+        this.googleId = googleId;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
     public int getUserId() {
@@ -50,11 +68,5 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

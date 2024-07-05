@@ -13,8 +13,8 @@ public class Artist extends User {
         super();
     }
 
-    public Artist(int userId, String username, String email, String profilePicture, String password, int artistId, String bio, List<String> songIds, String musicGenre) {
-        super(userId, username, email, profilePicture, password);
+    public Artist(int userId, String username, String email, String profilePicture, int roleId, String googleId, String password, int artistId, String bio, List<String> songIds, String musicGenre) {
+        super(userId, username, email, profilePicture, roleId, googleId);
         this.artistId = artistId;
         this.bio = bio;
         this.songIds = songIds;
