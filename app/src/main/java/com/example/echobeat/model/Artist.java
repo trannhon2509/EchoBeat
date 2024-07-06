@@ -3,7 +3,7 @@ package com.example.echobeat.model;
 import java.util.List;
 
 public class Artist extends User {
-    private int artistId;
+    private String artistId;
     private String bio;
     private List<String> songIds;
     private String musicGenre;
@@ -13,7 +13,7 @@ public class Artist extends User {
         super();
     }
 
-    public Artist(int userId, String username, String email, String profilePicture, int roleId, String googleId, String password, int artistId, String bio, List<String> songIds, String musicGenre) {
+    public Artist(String userId, String username, String email, String profilePicture, int roleId, String googleId, String password, String artistId, String bio, List<String> songIds, String musicGenre) {
         super(userId, username, email, profilePicture, roleId, googleId);
         this.artistId = artistId;
         this.bio = bio;
@@ -21,11 +21,11 @@ public class Artist extends User {
         this.musicGenre = musicGenre;
     }
 
-    public int getArtistId() {
+    public String getArtistId() {
         return artistId;
     }
 
-    public void setArtistId(int artistId) {
+    public void setArtistId(String artistId) {
         this.artistId = artistId;
     }
 

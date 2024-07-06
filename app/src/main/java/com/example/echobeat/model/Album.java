@@ -1,17 +1,19 @@
 package com.example.echobeat.model;
 
+import java.util.Date;
+
 public class Album {
-    private int albumId;
+    private String albumId;
     private int artistId;
     private String title;
-    private int releaseYear;
+    private Date releaseYear;
     private String coverImage;
     private int genreId;
 
     // Constructors, getters, and setters
     public Album() {}
 
-    public Album(int albumId, int artistId, String title, int releaseYear, String coverImage, int genreId) {
+    public Album(String albumId, int artistId, String title, Date releaseYear, String coverImage, int genreId) {
         this.albumId = albumId;
         this.artistId = artistId;
         this.title = title;
@@ -20,11 +22,11 @@ public class Album {
         this.genreId = genreId;
     }
 
-    public int getAlbumId() {
+    public String getAlbumId() {
         return albumId;
     }
 
-    public void setAlbumId(int albumId) {
+    public void setAlbumId(String albumId) {
         this.albumId = albumId;
     }
 
@@ -44,11 +46,11 @@ public class Album {
         this.title = title;
     }
 
-    public int getReleaseYear() {
+    public Date getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(int releaseYear) {
+    public void setReleaseYear(Date releaseYear) {
         this.releaseYear = releaseYear;
     }
 

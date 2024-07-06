@@ -1,7 +1,7 @@
 package com.example.echobeat.model;
 
 public class Playlist {
-    private int playlistId;
+    private String playlistId;
     private int userId;
     private String name;
     private String description;
@@ -10,7 +10,7 @@ public class Playlist {
     // Constructors, getters, and setters
     public Playlist() {}
 
-    public Playlist(int playlistId, int userId, String name, String description, String coverImage) {
+    public Playlist(String playlistId, int userId, String name, String description, String coverImage) {
         this.playlistId = playlistId;
         this.userId = userId;
         this.name = name;
@@ -18,11 +18,11 @@ public class Playlist {
         this.coverImage = coverImage;
     }
 
-    public int getPlaylistId() {
+    public String getPlaylistId() {
         return playlistId;
     }
 
-    public void setPlaylistId(int playlistId) {
+    public void setPlaylistId(String playlistId) {
         this.playlistId = playlistId;
     }
 

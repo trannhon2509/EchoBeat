@@ -1,47 +1,194 @@
 package com.example.echobeat.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.echobeat.R;
+import com.example.echobeat.activity.PlayerActivity;
+import com.example.echobeat.apdater.AlbumAdapter;
+import com.example.echobeat.apdater.ArtistAdapter;
+import com.example.echobeat.apdater.HistoryApdater;
 import com.example.echobeat.apdater.SongAdapter;
 import com.example.echobeat.firebase.FirebaseHelper;
+import com.example.echobeat.model.Album;
+import com.example.echobeat.model.Artist;
+import com.example.echobeat.model.History;
 import com.example.echobeat.model.Song;
+import com.example.echobeat.viewModel.AllFragmentViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AllFragment extends Fragment {
 
     private RecyclerView recyclerViewSongs;
+    private RecyclerView recyclerViewAlbums;
+    private RecyclerView recyclerViewArtists;
+    private RecyclerView recyclerViewHistory;
+
     private SongAdapter songAdapter;
+    private AlbumAdapter albumAdapter;
+    private ArtistAdapter artistAdapter;
+    private HistoryApdater historyApdater;
+    private AllFragmentViewModel viewModel;
 
     public AllFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);  // Retain this fragment across configuration changes
+    }
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_all, container, false);  // Update this line
+        View rootView = inflater.inflate(R.layout.fragment_all, container, false);
 
         // Initialize RecyclerView
-        recyclerViewSongs = rootView.findViewById(R.id.recyclerViewAll);  // Ensure this ID matches your layout file
+        recyclerViewSongs = rootView.findViewById(R.id.recycler_view_songs);
         recyclerViewSongs.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        // Load data into RecyclerView
-        loadSongs();
+        recyclerViewArtists = rootView.findViewById(R.id.recycler_view_artists);
+        recyclerViewArtists.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        recyclerViewAlbums = rootView.findViewById(R.id.recycler_view_albums);
+        recyclerViewAlbums.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        recyclerViewHistory = rootView.findViewById(R.id.recycler_view_history);
+        recyclerViewHistory.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns grid layout
+
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(AllFragmentViewModel.class);
+
+        viewModel.getHistory().observe(getViewLifecycleOwner(), new Observer<List<History>>() {
+            @Override
+            public void onChanged(List<History> histories) {
+                if (histories != null) {
+                    historyApdater = new HistoryApdater(getContext(), histories);
+                    recyclerViewHistory.setAdapter(historyApdater);
+                }
+            }
+        });
+
+        // Observe the ViewModel data
+        viewModel.getSongs().observe(getViewLifecycleOwner(), new Observer<List<Song>>() {
+            @Override
+            public void onChanged(List<Song> songs) {
+                if (songs != null) {
+                    songAdapter = new SongAdapter(getContext(), songs);
+                    songAdapter.setOnItemClickListener(new SongAdapter.OnItemClickListener() {
+                        // Inside onItemClick method in SongAdapter.OnItemClickListener
+                        @Override
+                        public void onItemClick(Song song) {
+                            if (getContext() != null) {
+                                // Ensure context is valid before showing Toast
+                                Toast.makeText(getContext(), "Play song: " + song.getTitle(), Toast.LENGTH_SHORT).show();
+
+                                // Pass song list and selected song to PlayerActivity
+                                Intent intent = new Intent(getContext(), PlayerActivity.class);
+                                intent.putExtra("SONG_DATA_LIST", (ArrayList<Song>) songs); // Pass entire list of songs
+                                intent.putExtra("SONG_DATA", song); // Pass selected song
+                                intent.putExtra("SONG_URL", song.getSongUrl());
+                                startActivity(intent);
+                            }
+                        }
+
+                    });
+                    recyclerViewSongs.setAdapter(songAdapter);
+                }
+            }
+        });
+
+        viewModel.getArtists().observe(getViewLifecycleOwner(), new Observer<List<Artist>>() {
+            @Override
+            public void onChanged(List<Artist> artists) {
+                if (artists != null) {
+                    artistAdapter = new ArtistAdapter(getContext(), artists);
+                    recyclerViewArtists.setAdapter(artistAdapter);
+                }
+            }
+        });
+
+        viewModel.getAlbums().observe(getViewLifecycleOwner(), new Observer<List<Album>>() {
+            @Override
+            public void onChanged(List<Album> albums) {
+                if (albums != null) {
+                    albumAdapter = new AlbumAdapter(getContext(), albums);
+                    recyclerViewAlbums.setAdapter(albumAdapter);
+                }
+            }
+        });
+
+        // Load data if ViewModel is empty
+        if (!viewModel.isSongsLoaded()) {
+            loadSongs();
+        }
+
+        if (!viewModel.isArtistsLoaded()) {
+            loadArtists();
+        }
+
+        if (!viewModel.isAlbumsLoaded()) {
+            loadAlbums();
+        }
+
+        if(!viewModel.isHistoryLoaded()){
+            loadHistory();
+        }
 
         return rootView;
+    }
+
+    private void loadHistory() {
+        FirebaseHelper<History> firebaseHelper = new FirebaseHelper<>();
+        firebaseHelper.getRecentData("histories", "timestamp", 4, History.class, new FirebaseHelper.DataCallback<History>() {
+            @Override
+            public void onCallback(List<History> data) {
+                if (data != null) {
+                    viewModel.setHistory(data);
+                }
+            }
+        });
+    }
+
+    private void loadArtists() {
+        FirebaseHelper<Artist> firebaseHelper = new FirebaseHelper<>();
+        firebaseHelper.getRecentData("artists", "username", 20, Artist.class, new FirebaseHelper.DataCallback<Artist>() {
+            @Override
+            public void onCallback(List<Artist> data) {
+                if (data != null) {
+                    viewModel.setArtists(data);
+                }
+            }
+        });
+    }
+
+    private void loadAlbums() {
+        FirebaseHelper<Album> firebaseHelper = new FirebaseHelper<>();
+        firebaseHelper.getRecentData("albums", "releaseYear", 20, Album.class, new FirebaseHelper.DataCallback<Album>() {
+            @Override
+            public void onCallback(List<Album> data) {
+                if (data != null) {
+                    viewModel.setAlbums(data);
+                }
+            }
+        });
     }
 
     private void loadSongs() {
@@ -50,11 +197,9 @@ public class AllFragment extends Fragment {
             @Override
             public void onCallback(List<Song> data) {
                 if (data != null) {
-                    songAdapter = new SongAdapter(getContext(), data);
-                    recyclerViewSongs.setAdapter(songAdapter);
+                    viewModel.setSongs(data);
                 }
             }
         });
     }
-
 }

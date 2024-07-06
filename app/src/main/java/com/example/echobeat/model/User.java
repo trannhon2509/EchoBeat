@@ -1,7 +1,7 @@
 package com.example.echobeat.model;
 
 public class User {
-    private int userId;
+    private String userId;
     private String username;
     private String email;
     private String profilePicture;
@@ -11,7 +11,7 @@ public class User {
     // Constructors, getters, and setters
     public User() {}
 
-    public User(int userId, String username, String email, String profilePicture, int roleId, String googleId) {
+    public User(String userId, String username, String email, String profilePicture, int roleId, String googleId) {
         this.userId = userId;
         this.username = username;
         this.email = email;
@@ -36,11 +36,11 @@ public class User {
         this.googleId = googleId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
