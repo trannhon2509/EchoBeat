@@ -1,8 +1,9 @@
 package com.example.echobeat.firebase;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
-import com.example.echobeat.R;
 import com.example.echobeat.model.Album;
 import com.example.echobeat.model.Artist;
 import com.example.echobeat.model.Category;
@@ -19,13 +20,13 @@ import java.util.Random;
 
 public class SeedData {
 
-    private FirebaseHelper<Album> albumHelper;
-    private FirebaseHelper<Artist> artistHelper;
-    private FirebaseHelper<Category> categoryHelper;
-    private FirebaseHelper<Playlist> playlistHelper;
-    private FirebaseHelper<Song> songHelper;
-    private FirebaseHelper<User> userHelper;
-    private FirebaseHelper<History> historyHelper;
+    private final  FirebaseHelper<Album> albumHelper;
+    private final FirebaseHelper<Artist> artistHelper;
+    private final FirebaseHelper<Category> categoryHelper;
+    private final FirebaseHelper<Playlist> playlistHelper;
+    private final FirebaseHelper<Song> songHelper;
+    private final FirebaseHelper<User> userHelper;
+    private final FirebaseHelper<History> historyHelper;
 
     public SeedData() {
         albumHelper = new FirebaseHelper<>();
@@ -71,6 +72,7 @@ public class SeedData {
                             historyHelper.addData("histories", history);
                         } else {
                             // Handle case where song is null
+                            Log.d("SeedData", "No song on firebase");
                         }
                     }
                 });
@@ -88,6 +90,7 @@ public class SeedData {
                             historyHelper.addData("histories", history);
                         } else {
                             // Handle case where album is null
+                            Log.d("SeedData", "No album on firebase");
                         }
                     }
                 });
