@@ -43,7 +43,7 @@ public class SeedData {
         seedArtists(15); // Truyền số lượng nghệ sĩ cần tạo vào đây
         seedCategories(8); // Truyền số lượng danh mục cần tạo vào đây
         seedPlaylists(10); // Truyền số lượng playlist cần tạo vào đây
-        seedSongs(5); // Truyền số lượng bài hát cần tạo vào đây
+//        seedSongs(5); // Truyền số lượng bài hát cần tạo vào đây
         seedUsers(10); // Truyền số lượng người dùng cần tạo vào đây
         seedHistory(20);
     }
@@ -118,7 +118,7 @@ public class SeedData {
         }
     }
 
-    private static @NonNull Date getRandomDate() {
+    public static @NonNull Date getRandomDate() {
         Random random = new Random();
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.set(2023, Calendar.JANUARY, 1); // Set start date to January 1, 2023
@@ -135,7 +135,7 @@ public class SeedData {
     private void seedArtists(int count) {
         for (int i = 1; i <= count; i++) {
             int artistId = i;
-            String artistName = "Đăng Vâu " + artistId;
+            String artistName = "Đăng" + artistId;
             String email = "artist" + artistId + "@example.com";
             String artistImage = "https://scontent.fdad3-6.fna.fbcdn.net/v/t1.6435-9/79315938_783274145470099_8800946627310256128_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=53a332&_nc_ohc=zSKOv4nh2twQ7kNvgH31r0r&_nc_ht=scontent.fdad3-6.fna&oh=00_AYAH1JZ5T-ZhAaaL-QBzYPUITdIiGkAIoLbICToy53CXdw&oe=66B040EA";
             String password = "password";
@@ -149,18 +149,12 @@ public class SeedData {
         }
     }
 
-
-
-
-
     private void seedCategories(int count) {
         for (int i = 1; i <= count; i++) {
             Category category = new Category(i, "Category " + i);
             categoryHelper.addData("categories", category);
         }
     }
-
-
 
     private void seedPlaylists(int count) {
         for (int i = 1; i <= count; i++) {
@@ -175,27 +169,21 @@ public class SeedData {
         }
     }
 
-
-
-
-    private void seedSongs(int count) {
-
-
-        for (int i = 1; i <= count; i++) {
-            int songId = i;
-            String userId = getRandomUserIdAsString();
-            String songUrl = "https://firebasestorage.googleapis.com/v0/b/echobeat-bbd1f.appspot.com/o/dung-lam-trai-tim-anh-dau-piano-khong-loi.mp3?alt=media&token=7528e94b-7f53-4b8a-8c14-f623c1d52c37";
-            String songTitle = "Song " + songId;
-            int songDuration = 180 + (i * 10); // incrementing duration
-            Date releaseYear = getRandomDate();
-            String pictureSong = "https://th.bing.com/th/id/OIP.4Acoxt6K25NRPbtIVvxmQQAAAA?rs=1&pid=ImgDetMain";
-            String categoryId = getRandomCategoryIdAsString();
-
-            Song song = new Song(String.valueOf(songId), userId, songUrl, songTitle, songDuration, releaseYear, pictureSong, categoryId);
-            songHelper.addData("songs", song);
-        }
-    }
-
+//    private void seedSongs(int count) {
+//        for (int i = 1; i <= count; i++) {
+//            int songId = i;
+//            String userId = getRandomUserIdAsString();
+//            String songUrl = "https://firebasestorage.googleapis.com/v0/b/echobeat-bbd1f.appspot.com/o/dung-lam-trai-tim-anh-dau-piano-khong-loi.mp3?alt=media&token=7528e94b-7f53-4b8a-8c14-f623c1d52c37";
+//            String songTitle = "Song " + songId;
+//            int songDuration = 180 + (i * 10); // incrementing duration
+//            Date releaseYear = getRandomDate();
+//            String pictureSong = "https://th.bing.com/th/id/OIP.4Acoxt6K25NRPbtIVvxmQQAAAA?rs=1&pid=ImgDetMain";
+//            String categoryId = getRandomCategoryIdAsString();
+//
+//            Song song = new Song(String.valueOf(songId), userId, songUrl, songTitle, songDuration, releaseYear, pictureSong, categoryId);
+//            songHelper.addData("songs", song);
+//        }
+//    }
 
     private void seedUsers(int count) {
         for (int i = 1; i <= count; i++) {
@@ -204,16 +192,11 @@ public class SeedData {
         }
     }
 
-
-
-
     private int getRandomUserId() {
         Random random = new Random();
         int randomUserId = random.nextInt(10) + 1; // Assuming user IDs range from 1 to 10
         return randomUserId;
     }
-
-
 
     private String getRandomUserIdAsString() {
         return String.valueOf(getRandomUserId());
