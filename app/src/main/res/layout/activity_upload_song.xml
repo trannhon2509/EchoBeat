@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    android:padding="16dp">
+
+    <!-- Activity Title -->
+    <TextView
+        android:id="@+id/tvActivityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UPLOAD YOUR TRACK"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:letterSpacing="0.05" />
+
+    <!-- Image View for Song Image -->
+    <ImageView
+        android:id="@+id/ivSongImage"
+        android:layout_width="234dp"
+        android:layout_height="175dp"
+        android:layout_below="@+id/tvActivityTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:contentDescription="Song Image"
+        android:src="@drawable/empty" />
+
+    <!-- Upload Image Button -->
+    <Button
+        android:id="@+id/btnUploadImage"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivSongImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/spotifyGreen"
+        android:text="UPLOAD IMAGE"
+        android:textColor="@color/white" />
+
+    <!-- Select Song Button -->
+    <Button
+        android:id="@+id/btnSelectSong"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnUploadImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/spotifyGreen"
+        android:text="SELECT SONG"
+        android:textColor="@color/white" />
+
+    <!-- Selected Song TextView -->
+    <TextView
+        android:id="@+id/tvSelectedSong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnSelectSong"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="No song selected"
+        android:textColor="@color/white" />
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/tvSongTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSelectedSong"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="TITLE"
+        android:textColor="#FFFFFF" />
+
+    <!-- Song Title EditText -->
+    <EditText
+        android:id="@+id/etSongTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSongTitleLabel"
+        android:layout_marginTop="10dp"
+        android:hint="Enter song title"
+        android:maxLength="30"
+        android:padding="8dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Publish Button -->
+    <!-- Progress Bar -->
+    <Button
+        android:id="@+id/btnUploadSong"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_below="@+id/etSongTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="96dp"
+        android:backgroundTint="@color/spotifyGreen"
+        android:text="PUBLISH"
+        android:textColor="@color/white" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

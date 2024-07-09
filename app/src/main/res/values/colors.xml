@@ -6,7 +6,7 @@
     <color name="green_pressed">#1AA34A</color>
     <color name="white_pressed">#DDDDDD</color>
 
-
+    <color name="spotifyGreen">#20bc54</color>
     <color name="colorAccent">#C53831</color>
     <color name="colorPrimaryText">#C12121</color>
     <color name="colorSecondaryText">#757575</color>

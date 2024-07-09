@@ -32,29 +32,20 @@ public class FirebaseHelper<T> {
     }
 
     public void addData(String collection, T data) {
-        checkCollectionExists(collection, new CollectionExistsCallback() {
-            @Override
-            public void onCallback(boolean exists) {
-                if (!exists) {
-                    db.collection(collection)
-                            .add(data)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding document", e);
-                                }
-                            });
-                } else {
-                    Log.d(TAG, "Collection already exists. Data was not added.");
-                }
-            }
-        });
+        db.collection(collection)
+                .add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
     }
 
     public void getData(String collection, final Class<T> clazz, final DataCallback<T> callback) {
