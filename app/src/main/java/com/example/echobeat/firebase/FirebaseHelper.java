@@ -6,23 +6,22 @@ import androidx.annotation.NonNull;
 
 import com.example.echobeat.model.Album;
 import com.example.echobeat.model.Playlist;
+import com.example.echobeat.model.ResultSearch;
 import com.example.echobeat.model.Song;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class FirebaseHelper<T> {
     private static final String TAG = "FirebaseHelper";
@@ -97,6 +96,67 @@ public class FirebaseHelper<T> {
                 });
     }
 
+    public void search(String query, SearchCallback<ResultSearch> callback) {
+        // Implement Firebase search logic here
+        // Once search is complete, call the callback with the results
+        List<ResultSearch> searchResults = new ArrayList<>();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("songs")
+                .whereEqualTo("title", query)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            searchResults.add(document.toObject(ResultSearch.class));
+                        }
+                        callback.onSearchComplete(searchResults);
+                    } else {
+                        // Handle the error
+                    }
+                });
+    }
+
+    public void searchSongs(String query, Consumer<List<Song>> callback) {
+        db.collection("songs")
+                .whereGreaterThanOrEqualTo("title", query)
+                .whereLessThanOrEqualTo("title", query + "\uf8ff")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Song> songs = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Song song = document.toObject(Song.class);
+                            songs.add(song);
+                        }
+                        callback.accept(songs);
+                    } else {
+                        callback.accept(new ArrayList<>());
+                    }
+                });
+    }
+
+    public void getAllData(String collection, final Class<T> clazz, final DataCallback<T> callback) {
+        db.collection(collection)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<T> dataList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                T item = document.toObject(clazz);
+                                dataList.add(item);
+                            }
+                            callback.onCallback(dataList);
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                            callback.onCallback(null);
+                        }
+                    }
+                });
+    }
+
     public void getRecentData(String collection, String orderByField, int limit, final Class<T> clazz, final DataCallback<T> callback) {
         db.collection(collection)
                 .orderBy(orderByField, Query.Direction.DESCENDING)
@@ -133,7 +193,7 @@ public class FirebaseHelper<T> {
                                 Song song = document.toObject(Song.class);
                                 songs.add(song);
                             }
-                            if (songs.size() > 0) {
+                            if (!songs.isEmpty()) {
                                 Random random = new Random();
                                 int randomIndex = random.nextInt(songs.size());
                                 Song randomSong = songs.get(randomIndex);
@@ -161,7 +221,7 @@ public class FirebaseHelper<T> {
                                 Album album = document.toObject(Album.class);
                                 albums.add(album);
                             }
-                            if (albums.size() > 0) {
+                            if (!albums.isEmpty()) {
                                 Random random = new Random();
                                 int randomIndex = random.nextInt(albums.size());
                                 Album randomAlbum = albums.get(randomIndex);
@@ -177,7 +237,6 @@ public class FirebaseHelper<T> {
                 });
     }
 
-
     public void getRandomPlaylist(final PlaylistCallback callback) {
         db.collection("playlists")
                 .get()
@@ -190,7 +249,7 @@ public class FirebaseHelper<T> {
                                 Playlist playlist = document.toObject(Playlist.class);
                                 playlists.add(playlist);
                             }
-                            if (playlists.size() > 0) {
+                            if (!playlists.isEmpty()) {
                                 Random random = new Random();
                                 int randomIndex = random.nextInt(playlists.size());
                                 Playlist randomPlaylist = playlists.get(randomIndex);
@@ -205,9 +264,6 @@ public class FirebaseHelper<T> {
                     }
                 });
     }
-
-
-
 
     private interface CollectionExistsCallback {
         void onCallback(boolean exists);
@@ -230,5 +286,8 @@ public class FirebaseHelper<T> {
         void onPlaylistLoaded(Playlist playlist);
     }
 
-
+    // Interface callback để trả về kết quả tìm kiếm
+    public interface SearchCallback<R> {
+        void onSearchComplete(List<ResultSearch> searchResults);
+    }
 }

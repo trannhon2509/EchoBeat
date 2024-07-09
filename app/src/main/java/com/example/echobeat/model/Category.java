@@ -4,7 +4,6 @@ public class Category {
     private int categoryId;
     private String name;
 
-    // Constructors, getters, and setters
     public Category() {}
 
     public Category(int categoryId, String name) {

@@ -99,10 +99,9 @@ public class AllFragment extends Fragment {
                             if (getContext() != null) {
                                 // Ensure context is valid before showing Toast
                                 Toast.makeText(getContext(), "Play song: " + song.getTitle(), Toast.LENGTH_SHORT).show();
-
                                 // Pass song list and selected song to PlayerActivity
                                 Intent intent = new Intent(getContext(), PlayerActivity.class);
-                                intent.putExtra("SONG_DATA_LIST", (ArrayList<Song>) songs); // Pass entire list of songs
+                                intent.putParcelableArrayListExtra("SONG_LIST", (ArrayList<Song>) songs);
                                 intent.putExtra("SONG_DATA", song); // Pass selected song
                                 intent.putExtra("SONG_URL", song.getSongUrl());
                                 startActivity(intent);

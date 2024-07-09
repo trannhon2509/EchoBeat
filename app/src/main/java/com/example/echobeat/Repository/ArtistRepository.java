@@ -8,7 +8,7 @@ import com.example.echobeat.model.Artist;
 
 public class ArtistRepository {
 
-    private Context context;
+    private final Context context;
 
     public ArtistRepository(Context context) {
         this.context = context;

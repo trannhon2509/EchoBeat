@@ -27,6 +27,8 @@ public class SeedData {
     private final FirebaseHelper<Song> songHelper;
     private final FirebaseHelper<User> userHelper;
     private final FirebaseHelper<History> historyHelper;
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
 
     public SeedData() {
         albumHelper = new FirebaseHelper<>();
@@ -43,18 +45,18 @@ public class SeedData {
         seedArtists(15); // Truyền số lượng nghệ sĩ cần tạo vào đây
         seedCategories(8); // Truyền số lượng danh mục cần tạo vào đây
         seedPlaylists(10); // Truyền số lượng playlist cần tạo vào đây
-        seedSongs(5); // Truyền số lượng bài hát cần tạo vào đây
+        seedSongs(200); // Truyền số lượng bài hát cần tạo vào đây
         seedUsers(10); // Truyền số lượng người dùng cần tạo vào đây
-        seedHistory(20);
+        seedHistory(1000);
     }
 
     private void seedHistory(int count) {
         for (int i = 1; i <= count; i++) {
             String historyId = String.valueOf(i);
             String type;
-            String[] itemId = new String[100]; // Increase size to a reasonable number
-            String[] title = new String[100]; // Increase size to a reasonable number
-            String[] coverImage = new String[100]; // Increase size to a reasonable number
+            String[] itemId = new String[1000]; // Increase size to a reasonable number
+            String[] title = new String[1000]; // Increase size to a reasonable number
+            String[] coverImage = new String[1000]; // Increase size to a reasonable number
 
             // Random loại (song, album, playlist)
             int itemType = new Random().nextInt(2);
@@ -106,7 +108,7 @@ public class SeedData {
         for (int i = 1; i <= count; i++) {
             String albumId = i+"";
             int userId = getRandomUserId();
-            String albumName = "Album " + albumId;
+            String albumName = generateRandomName(3) + " " + generateRandomName(3);
 
             String albumImage = "https://vignette.wikia.nocookie.net/leagueoflegends/images/a/a6/Jax_OriginalCentered.jpg/revision/latest/scale-to-width-down/1215?cb=20180414203245";
             int categoryId = getRandomCategoryId();
@@ -135,7 +137,7 @@ public class SeedData {
     private void seedArtists(int count) {
         for (int i = 1; i <= count; i++) {
             int artistId = i;
-            String artistName = "Đăng Vâu " + artistId;
+            String artistName = generateRandomName(10); // Tạo tên nghệ sĩ ngẫu nhiên với độ dài 10
             String email = "artist" + artistId + "@example.com";
             String artistImage = "https://scontent.fdad3-6.fna.fbcdn.net/v/t1.6435-9/79315938_783274145470099_8800946627310256128_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=53a332&_nc_ohc=zSKOv4nh2twQ7kNvgH31r0r&_nc_ht=scontent.fdad3-6.fna&oh=00_AYAH1JZ5T-ZhAaaL-QBzYPUITdIiGkAIoLbICToy53CXdw&oe=66B040EA";
             String password = "password";
@@ -144,9 +146,19 @@ public class SeedData {
             List<String> songIds = Arrays.asList(String.valueOf(i), String.valueOf(i + 1), String.valueOf(i + 2)); // Example songIds
             String genre = (i % 2 == 0) ? "Rock" : "Pop";
 
-            Artist artist = new Artist(artistId+"", artistName, email, artistImage, 1, "asdhjfgahjsdgfhjsadgfhjasg", password, userId+"", bio, songIds, genre);
+            Artist artist = new Artist(artistId + "", artistName, email, artistImage, 1, "asdhjfgahjsdgfhjsadgfhjasg", password, userId + "", bio, songIds, genre);
             artistHelper.addData("artists", artist);
         }
+    }
+
+    private String generateRandomName(int length) {
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(index));
+        }
+        return sb.toString();
     }
 
 
@@ -179,22 +191,25 @@ public class SeedData {
 
 
     private void seedSongs(int count) {
-
+        Random random = new Random();
 
         for (int i = 1; i <= count; i++) {
-            int songId = i;
             String userId = getRandomUserIdAsString();
             String songUrl = "https://firebasestorage.googleapis.com/v0/b/echobeat-bbd1f.appspot.com/o/dung-lam-trai-tim-anh-dau-piano-khong-loi.mp3?alt=media&token=7528e94b-7f53-4b8a-8c14-f623c1d52c37";
-            String songTitle = "Song " + songId;
+            String songTitle = generateRandomName(3) + " " +generateRandomName(3) + " " + generateRandomName(3);
             int songDuration = 180 + (i * 10); // incrementing duration
             Date releaseYear = getRandomDate();
             String pictureSong = "https://th.bing.com/th/id/OIP.4Acoxt6K25NRPbtIVvxmQQAAAA?rs=1&pid=ImgDetMain";
             String categoryId = getRandomCategoryIdAsString();
 
-            Song song = new Song(String.valueOf(songId), userId, songUrl, songTitle, songDuration, releaseYear, pictureSong, categoryId);
+            // Generate random play count between 0 and 1000
+            int playCount = random.nextInt(1001); // 0 to 1000
+
+            Song song = new Song(playCount, String.valueOf(i), userId, songUrl, songTitle, songDuration, releaseYear, pictureSong, categoryId);
             songHelper.addData("songs", song);
         }
     }
+
 
 
     private void seedUsers(int count) {

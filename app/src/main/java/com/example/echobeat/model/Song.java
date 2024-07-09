@@ -16,6 +16,7 @@ public class Song  implements Parcelable {
     private Date releaseYear;
     private String pictureSong;
     private String categoryId;
+    private int playCount;
 
     // Constructors, getters, and setters
     public Song() {}
@@ -23,7 +24,7 @@ public class Song  implements Parcelable {
         title = in.readString();
         pictureSong = in.readString();
     }
-    public Song(String songId, String userId, String songUrl, String title, int duration, Date releaseYear, String pictureSong, String categoryId) {
+    public Song(int playCount, String songId, String userId, String songUrl, String title, int duration, Date releaseYear, String pictureSong, String categoryId) {
         this.songId = songId;
         this.userId = userId;
         this.songUrl = songUrl;
@@ -32,6 +33,7 @@ public class Song  implements Parcelable {
         this.releaseYear = releaseYear;
         this.pictureSong = pictureSong;
         this.categoryId = categoryId;
+        this.playCount = playCount;
     }
 
     public String getSongId() {
@@ -96,6 +98,14 @@ public class Song  implements Parcelable {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public int getPlayCount() {
+        return playCount;
+    }
+
+    public void setPlayCount(int playCount) {
+        this.playCount = playCount;
     }
 
     @Override

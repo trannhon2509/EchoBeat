@@ -14,14 +14,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.echobeat.R;
 import com.example.echobeat.model.Song;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Song> songs;
+    private final Context context;
+    private final List<Song> songs;
     private OnItemClickListener listener;
 
     public SongAdapter(Context context, List<Song> songs) {
@@ -36,14 +35,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-//    @Override
-//    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        Song song = songs.get(position);
-//
-//        // Bind data to views
-//        holder.songTitle.setText(song.getTitle());
-//        Picasso.get().load(song.getPictureSong()).into(holder.songImage);
-//    }
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Song song = songs.get(position);
+
+        holder.songTitle.setText(song.getTitle());
+
+        // Load image from URL using Glide
+        Glide.with(context)
+                .load(song.getPictureSong()) // URL of the image from Firebase
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.ic_loading) // Placeholder image while loading
+                        .error(R.drawable.ic_error)) // Error image if loading fails
+                .into(holder.songImage);
+    }
 
     @Override
     public int getItemCount() {
@@ -69,25 +74,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                 }
             });
         }
-
-
     }
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Song song = songs.get(position);
-
-        holder.songTitle.setText(song.getTitle());
-
-        // Load ảnh từ URL bằng Glide
-        Glide.with(context)
-                .load(song.getPictureSong()) // URL của ảnh từ Firebase
-                .apply(new RequestOptions()
-                        .placeholder(R.drawable.ic_loading) // Hình ảnh thay thế khi đang tải
-                        .error(R.drawable.ic_error)) // Hình ảnh thay thế khi tải lỗi
-                .into(holder.songImage);
-    }
-
-
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -96,5 +83,4 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     public interface OnItemClickListener {
         void onItemClick(Song song);
     }
-
 }
