@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.echobeat" />
-                  <option name="mobileSdkAppId" value="1:366067854706:android:67dbecfd4510c2ef8d81eb" />
-                  <option name="projectId" value="echobeat-bbd1f" />
-                  <option name="projectNumber" value="366067854706" />
+                  <option name="mobileSdkAppId" value="1:240697192021:android:181cc4ab2086cbaf842edc" />
+                  <option name="projectId" value="echobeat-493cb" />
+                  <option name="projectNumber" value="240697192021" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

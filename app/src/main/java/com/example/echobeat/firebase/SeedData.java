@@ -45,9 +45,9 @@ public class SeedData {
         seedArtists(15); // Truyền số lượng nghệ sĩ cần tạo vào đây
         seedCategories(8); // Truyền số lượng danh mục cần tạo vào đây
         seedPlaylists(10); // Truyền số lượng playlist cần tạo vào đây
-        seedSongs(200); // Truyền số lượng bài hát cần tạo vào đây
+        seedSongs(5); // Truyền số lượng bài hát cần tạo vào đây
         seedUsers(10); // Truyền số lượng người dùng cần tạo vào đây
-        seedHistory(1000);
+        seedHistory(100);
     }
 
     private void seedHistory(int count) {
@@ -120,7 +120,7 @@ public class SeedData {
         }
     }
 
-    private static @NonNull Date getRandomDate() {
+    public static @NonNull Date getRandomDate() {
         Random random = new Random();
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.set(2023, Calendar.JANUARY, 1); // Set start date to January 1, 2023
