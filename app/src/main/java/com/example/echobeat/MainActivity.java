@@ -13,12 +13,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.echobeat.activity.LoginActivity;
 import com.example.echobeat.activity.SettingsActivity;
 import com.example.echobeat.firebase.SeedData;
 import com.example.echobeat.fragment.HomeFragment;
 import com.example.echobeat.fragment.LibraryFragment;
+import com.example.echobeat.fragment.ProfileFragment;
 import com.example.echobeat.fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -79,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
         // Handle navigation item clicks in the drawer
         navigationView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
-
-            if (itemId == R.id.menu_settings) {
+            if (itemId == R.id.menu_profile) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, new ProfileFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }else if (itemId == R.id.menu_settings) {
                 // Handle settings click
              startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             } else if (itemId == R.id.menu_login) {
