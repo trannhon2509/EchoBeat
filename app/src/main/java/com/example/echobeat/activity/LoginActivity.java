@@ -13,7 +13,7 @@ import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
 import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.activity.loginModel.OptionRole;
-import com.example.echobeat.modelFirebase.User;
+import com.example.echobeat.modelSqlite.User;
 import com.example.echobeat.session.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.example.echobeat.dbSqlite.DatabaseHelper;
-import com.example.echobeat.modelFirebase.User;
+import com.example.echobeat.modelSqlite.User;
 
 public class UserRepository {
     private Context context;
