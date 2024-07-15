@@ -19,12 +19,16 @@ import com.example.echobeat.firebase.FirebaseHelper;
 import com.example.echobeat.model.Song;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PlayerActivity extends AppCompatActivity {
 
     private TextView songTitleTextView;
     private ImageView songImageView;
     private ImageButton buttonPlay;
+    private ImageButton buttonShuffle;
     private boolean isPlaying = false;
     private MediaPlayer mediaPlayer;
     private String songUrl;
@@ -35,6 +39,14 @@ public class PlayerActivity extends AppCompatActivity {
     private TextView textCurrentTime;
     private TextView textTotalTime;
     private FirebaseHelper<Song> firebaseHelper;
+
+    private List<Song> nextSongsList = new ArrayList<>();
+    private int currentSongIndex = 0;
+    private boolean isShuffling = false;
+    private List<Song> randomSongsList = new ArrayList<>();
+    private int currentRandomIndex = 0;
+    private ImageButton buttonRepeat;
+    private boolean isRepeating = false;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -47,6 +59,7 @@ public class PlayerActivity extends AppCompatActivity {
         buttonPlay = findViewById(R.id.buttonPlay);
         buttonNext = findViewById(R.id.buttonNext);
         buttonPrevious = findViewById(R.id.buttonPrevious);
+        buttonShuffle = findViewById(R.id.buttonShuffle);
         playerSeeBarTime = findViewById(R.id.playerSeeBarTime);
         textCurrentTime = findViewById(R.id.textCurrentTime);
         textTotalTime = findViewById(R.id.textTotalTime);
@@ -84,38 +97,28 @@ public class PlayerActivity extends AppCompatActivity {
             // Update current time and seek bar progress
             updateSeekBar();
         });
-        // Thiết lập sự kiện onCompletionListener của MediaPlayer
-        mediaPlayer.setOnCompletionListener(mp -> {
-            // Gọi phương thức để lấy bài hát ngẫu nhiên từ Firestore và phát lại
-            firebaseHelper.getRandomSong(new FirebaseHelper.SongCallback() {
-                @Override
-                public void onSongLoaded(Song song) {
-                    if (song != null) {
-                        // Update UI with new song data
-                        songTitleTextView.setText(song.getTitle());
-                        Glide.with(PlayerActivity.this)
-                                .load(song.getPictureSong())
-                                .apply(new RequestOptions()
-                                        .placeholder(R.drawable.ic_loading)
-                                        .error(R.drawable.ic_error))
-                                .into(songImageView);
 
-                        // Cập nhật songUrl và currentPosition cho bài hát mới
-                        songUrl = song.getSongUrl();
-                        currentPosition = 0; // Reset current position
-                        mediaPlayer.reset();
-                        try {
-                            mediaPlayer.setDataSource(songUrl);
-                            mediaPlayer.prepareAsync(); // Chuẩn bị phát nhạc mới
-                        } catch (IOException e) {
-                            Log.e("PlayActivity", "Error setting data source for new song", e);
+        mediaPlayer.setOnCompletionListener(mp -> {
+            if (randomSongsList.isEmpty() || currentRandomIndex >= randomSongsList.size()) {
+                // Lấy bộ 5 bài hát ngẫu nhiên mới từ Firebase
+                firebaseHelper.getRandomSongs(5, new FirebaseHelper.DataCallback<Song>() {
+                    @Override
+                    public void onCallback(List<Song> data) {
+                        if (data != null && !data.isEmpty()) {
+                            randomSongsList.clear();
+                            randomSongsList.addAll(data);
+                            currentRandomIndex = 0;
+                            playRandomSongs();
+                        } else {
+                            Log.e("PlayerActivity", "No random songs loaded from Firebase");
+                            // Xử lý trường hợp không tìm thấy bài hát ngẫu nhiên
                         }
-                    } else {
-                        Log.e("PlayActivity", "No song loaded from Firebase");
-                        // Xử lý trường hợp không tìm thấy bài hát
                     }
-                }
-            });
+                });
+            } else {
+                // Tiếp tục phát các bài hát còn lại trong RandomSongsList
+                playRandomSongs();
+            }
         });
 
         buttonPlay.setOnClickListener(v -> {
@@ -148,6 +151,33 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
+        buttonShuffle.setOnClickListener(v -> {
+            isShuffling = !isShuffling;
+            if (isShuffling) {
+                buttonShuffle.setImageResource(R.drawable.baseline_shuffle);
+                // Fetch initial set of random songs
+                fetchRandomSongs();
+                buttonRepeat.setEnabled(false);
+            } else {
+                buttonShuffle.setImageResource(R.drawable.baseline_shuffleoff);
+                buttonRepeat.setEnabled(true);
+            }
+        });
+
+        buttonRepeat = findViewById(R.id.buttonRepeat);
+        buttonRepeat.setOnClickListener(v -> {
+            isRepeating = !isRepeating;
+            if (isRepeating) {
+                buttonRepeat.setImageResource(R.drawable.baseline_repeatone);
+                mediaPlayer.setLooping(true);
+                buttonShuffle.setEnabled(false);
+            } else {
+                buttonRepeat.setImageResource(R.drawable.baseline_repeat);
+                mediaPlayer.setLooping(false);
+                buttonShuffle.setEnabled(true);
+            }
+        });
+
         // Handle seek bar change
         playerSeeBarTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -166,18 +196,154 @@ public class PlayerActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        // Initialize buttonNext and buttonPrevious listeners
-        // Implement your logic for these buttons as needed
         buttonNext.setOnClickListener(v -> {
-            // Logic for playing the next song
+            playNextSong();
         });
 
         buttonPrevious.setOnClickListener(v -> {
-            // Logic for playing the previous song
+            playPreviousSong();
         });
     }
 
+    private void fetchRandomSongs() {
+        firebaseHelper.getRandomSongs(5, new FirebaseHelper.DataCallback<Song>() {
+            @Override
+            public void onCallback(List<Song> data) {
+                if (data != null && !data.isEmpty()) {
+                    randomSongsList.clear();
+                    randomSongsList.addAll(data);
+                    currentRandomIndex = 0;
+                    Collections.shuffle(randomSongsList);
+                    playRandomSongs();
+                } else {
+                    Log.e("PlayerActivity", "No random songs loaded from Firebase");
+                }
+            }
+        });
+    }
 
+    private void playRandomSongs() {
+        if (!randomSongsList.isEmpty() && currentRandomIndex < randomSongsList.size()) {
+            Song nextSong = randomSongsList.get(currentRandomIndex);
+            songTitleTextView.setText(nextSong.getTitle());
+            Glide.with(PlayerActivity.this)
+                    .load(nextSong.getPictureSong())
+                    .apply(new RequestOptions()
+                            .placeholder(R.drawable.ic_loading)
+                            .error(R.drawable.ic_error))
+                    .into(songImageView);
+            songUrl = nextSong.getSongUrl();
+            currentPosition = 0;
+            mediaPlayer.reset();
+            try {
+                mediaPlayer.setDataSource(songUrl);
+                mediaPlayer.prepareAsync();
+            } catch (IOException e) {
+                Log.e("PlayerActivity", "Error setting data source for next song", e);
+            }
+            currentRandomIndex++;
+        } else {
+            // Handle end of list or no songs available
+            Log.e("PlayerActivity", "No more random songs to play in the list");
+            // Optionally reset or handle end of list behavior
+        }
+    }
+
+    private void playNextSong() {
+        if (currentSongIndex >= nextSongsList.size()) {
+            // Fetch new set of 5 random songs
+            firebaseHelper.getRandomSongs(5, new FirebaseHelper.DataCallback<Song>() {
+                @Override
+                public void onCallback(List<Song> data) {
+                    if (data != null && !data.isEmpty()) {
+                        nextSongsList.clear();
+                        nextSongsList.addAll(data);
+                        currentSongIndex = 0; // Reset index to start from the new list
+                        playNextSong(); // Start playing the next song in the new list
+                    } else {
+                        Log.e("PlayerActivity", "No next songs loaded from Firebase");
+                        // Handle case where no next songs are found
+                    }
+                }
+            });
+        } else {
+            // Play next song in the list
+            if (currentSongIndex < nextSongsList.size()) {
+                Song nextSong = nextSongsList.get(currentSongIndex);
+                songTitleTextView.setText(nextSong.getTitle());
+                Glide.with(PlayerActivity.this)
+                        .load(nextSong.getPictureSong())
+                        .apply(new RequestOptions()
+                                .placeholder(R.drawable.ic_loading)
+                                .error(R.drawable.ic_error))
+                        .into(songImageView);
+                songUrl = nextSong.getSongUrl();
+                currentPosition = 0;
+                mediaPlayer.reset();
+                try {
+                    mediaPlayer.setDataSource(songUrl);
+                    mediaPlayer.prepareAsync();
+                } catch (IOException e) {
+                    Log.e("PlayerActivity", "Error setting data source for next song", e);
+                }
+                currentSongIndex++;
+            }
+        }
+        //Đặt chế độ vòng lặp dựa trên trạng thái hiện tại
+        if (isRepeating) {
+            mediaPlayer.setLooping(true);
+        } else {
+            mediaPlayer.setLooping(false);
+        }
+    }
+
+    private void playPreviousSong() {
+        if (currentSongIndex <= 0) {
+            // Fetch new set of 5 random songs for previous songs
+            firebaseHelper.getRandomSongs(5, new FirebaseHelper.DataCallback<Song>() {
+                @Override
+                public void onCallback(List<Song> data) {
+                    if (data != null && !data.isEmpty()) {
+                        nextSongsList.clear();
+                        nextSongsList.addAll(data);
+                        currentSongIndex = nextSongsList.size() - 1; // Start from the end of the new list
+                        playPreviousSong(); // Start playing the previous song in the new list
+                    } else {
+                        Log.e("PlayerActivity", "No previous songs loaded from Firebase");
+                        // Handle case where no previous songs are found
+                    }
+                }
+            });
+        } else {
+            // Play previous song in the list
+            if (currentSongIndex > 0) {
+                currentSongIndex--; // Decrement index first
+                Song previousSong = nextSongsList.get(currentSongIndex);
+                songTitleTextView.setText(previousSong.getTitle());
+                Glide.with(PlayerActivity.this)
+                        .load(previousSong.getPictureSong())
+                        .apply(new RequestOptions()
+                                .placeholder(R.drawable.ic_loading)
+                                .error(R.drawable.ic_error))
+                        .into(songImageView);
+                songUrl = previousSong.getSongUrl();
+                currentPosition = 0;
+                mediaPlayer.reset();
+                try {
+                    mediaPlayer.setDataSource(songUrl);
+                    mediaPlayer.prepareAsync();
+                } catch (IOException e) {
+                    Log.e("PlayerActivity", "Error setting data source for previous song", e);
+                }
+            }
+        }
+        //Đặt chế độ vòng lặp dựa trên trạng thái hiện tại
+        if (isRepeating) {
+            mediaPlayer.setLooping(true);
+        } else {
+            mediaPlayer.setLooping(false);
+        }
+    }
 
     private void startPlayback() {
         // Start playback logic
@@ -225,7 +391,6 @@ public class PlayerActivity extends AppCompatActivity {
             }
         }).start();
     }
-
 
     // Helper method to convert milliseconds to time format (mm:ss)
     private String millisecondsToTimer(long milliseconds) {
