@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.echobeat.model.Album;
 import com.example.echobeat.model.History;
 import com.example.echobeat.R;
 
@@ -19,8 +20,9 @@ import java.util.List;
 
 public class HistoryApdater extends RecyclerView.Adapter<HistoryApdater.HistoryViewHolder> {
 
-    private List<History> historyList;
-    private Context context;
+    private final List<History> historyList;
+    private final Context context;
+    private OnItemClickListener listener;
 
     public HistoryApdater(Context context, List<History> historyList) {
         this.context = context;
@@ -53,7 +55,7 @@ public class HistoryApdater extends RecyclerView.Adapter<HistoryApdater.HistoryV
         return historyList.size();
     }
 
-    public static class HistoryViewHolder extends RecyclerView.ViewHolder {
+    public class HistoryViewHolder extends RecyclerView.ViewHolder {
         ImageView historyImage;
         TextView historyTitle;
 
@@ -61,6 +63,24 @@ public class HistoryApdater extends RecyclerView.Adapter<HistoryApdater.HistoryV
             super(itemView);
             historyImage = itemView.findViewById(R.id.history_image);
             historyTitle = itemView.findViewById(R.id.history_title);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(historyList.get(position));
+                    }
+                }
+            });
         }
+    }
+
+    public void setOnItemClickListener(HistoryApdater.OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(History history);
     }
 }

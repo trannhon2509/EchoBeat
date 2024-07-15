@@ -16,6 +16,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.echobeat.R;
+import com.example.echobeat.activity.AlbumDetailActivity;
+import com.example.echobeat.activity.ArtisSongActivity;
 import com.example.echobeat.activity.PlayerActivity;
 import com.example.echobeat.apdater.AlbumAdapter;
 import com.example.echobeat.apdater.ArtistAdapter;
@@ -81,6 +83,28 @@ public class AllFragment extends Fragment {
             public void onChanged(List<History> histories) {
                 if (histories != null) {
                     historyApdater = new HistoryApdater(getContext(), histories);
+                    historyApdater.setOnItemClickListener(new HistoryApdater.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(History history) {
+                            switch (history.getType()) {
+                                case "song":
+                                    // Chuyển sang Activity hiển thị thông tin của bài hát
+                                    Intent songIntent = new Intent(getContext(), PlayerActivity.class);
+                                    songIntent.putExtra("SONG_ID", history.getItemId());
+                                    startActivity(songIntent);
+                                    break;
+                                case "album":
+                                    // Chuyển sang Activity hiển thị thông tin của album
+                                    Intent albumIntent = new Intent(getContext(), AlbumDetailActivity.class);
+                                    albumIntent.putExtra("ALBUM_ID", history.getItemId());
+                                    startActivity(albumIntent);
+                                    break;
+                                default:
+                                    // Xử lý khi không có type phù hợp
+                                    break;
+                            }
+                        }
+                    });
                     recyclerViewHistory.setAdapter(historyApdater);
                 }
             }
@@ -119,6 +143,19 @@ public class AllFragment extends Fragment {
             public void onChanged(List<Artist> artists) {
                 if (artists != null) {
                     artistAdapter = new ArtistAdapter(getContext(), artists);
+                    artistAdapter.setOnItemClickListener(new ArtistAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Artist artist) {
+                            if (getContext() != null) {
+                                // Ensure context is valid before showing Toast
+                                Toast.makeText(getContext(), "You had choose: " + artist.getUsername(), Toast.LENGTH_SHORT).show();
+                                // Pass song list and selected song to PlayerActivity
+                                Intent intent = new Intent(getContext(), ArtisSongActivity.class);
+                                intent.putParcelableArrayListExtra("SONG_LIST", (ArrayList<Artist>) artists);
+                                startActivity(intent);
+                            }
+                        }
+                    });
                     recyclerViewArtists.setAdapter(artistAdapter);
                 }
             }
@@ -129,6 +166,19 @@ public class AllFragment extends Fragment {
             public void onChanged(List<Album> albums) {
                 if (albums != null) {
                     albumAdapter = new AlbumAdapter(getContext(), albums);
+                    albumAdapter.setOnItemClickListener(new AlbumAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Album album) {
+                            if (getContext() != null) {
+                                // Ensure context is valid before showing Toast
+                                Toast.makeText(getContext(), "You had choose: " + album.getTitle(), Toast.LENGTH_SHORT).show();
+                                // Pass song list and selected song to PlayerActivity
+                                Intent intent = new Intent(getContext(), AlbumDetailActivity.class);
+                                intent.putParcelableArrayListExtra("SONG_LIST", (ArrayList<Album>) albums);
+                                startActivity(intent);
+                            }
+                        }
+                    });
                     recyclerViewAlbums.setAdapter(albumAdapter);
                 }
             }

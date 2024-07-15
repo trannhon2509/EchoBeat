@@ -1,8 +1,13 @@
 package com.example.echobeat.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
-public class Artist extends User {
+public class Artist extends User implements Parcelable {
     private String artistId;
     private String bio;
     private List<String> songIds;
@@ -20,6 +25,25 @@ public class Artist extends User {
         this.songIds = songIds;
         this.musicGenre = musicGenre;
     }
+
+    protected Artist(Parcel in) {
+        artistId = in.readString();
+        bio = in.readString();
+        songIds = in.createStringArrayList();
+        musicGenre = in.readString();
+    }
+
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
 
     public String getArtistId() {
         return artistId;
@@ -51,5 +75,18 @@ public class Artist extends User {
 
     public void setMusicGenre(String musicGenre) {
         this.musicGenre = musicGenre;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(artistId);
+        parcel.writeString(bio);
+        parcel.writeStringList(songIds);
+        parcel.writeString(musicGenre);
     }
 }
