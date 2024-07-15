@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
 import com.example.echobeat.activity.LoginActivity;
-import com.example.echobeat.activity.LoginGoogle;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
