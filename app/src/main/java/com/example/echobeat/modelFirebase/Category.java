@@ -1,4 +1,4 @@
-package com.example.echobeat.model;
+package com.example.echobeat.modelFirebase;
 
 public class Category {
     private int categoryId;

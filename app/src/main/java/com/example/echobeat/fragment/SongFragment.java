@@ -13,15 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echobeat.R;
 import com.example.echobeat.apdater.SongAdapter;
-import com.example.echobeat.firebase.FirebaseHelper;
-import com.example.echobeat.model.History;
-import com.example.echobeat.model.Song;
+import com.example.echobeat.dbFirebase.FirebaseHelper;
+import com.example.echobeat.modelFirebase.History;
+import com.example.echobeat.modelFirebase.Song;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class SongFragment extends Fragment {

@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.echobeat.model.Album;
-import com.example.echobeat.model.Artist;
-import com.example.echobeat.model.History;
-import com.example.echobeat.model.Song;
+import com.example.echobeat.modelFirebase.Album;
+import com.example.echobeat.modelFirebase.Artist;
+import com.example.echobeat.modelFirebase.History;
+import com.example.echobeat.modelFirebase.Song;
 
 import java.util.List;
 

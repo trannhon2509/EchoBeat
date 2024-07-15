@@ -1,24 +1,20 @@
 package com.example.echobeat.activity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
-import com.example.echobeat.Repository.UserRepository;
+import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.activity.loginModel.OptionRole;
-import com.example.echobeat.model.User;
+import com.example.echobeat.modelFirebase.User;
+import com.example.echobeat.session.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -96,31 +92,28 @@ public class LoginActivity extends AppCompatActivity {
                         String email = user.getEmail();
                         String avatar = user.getPhotoUrl().toString();
                         String googleId = user.getUid();
-
-                        User userInfo = new User("",fullname, email, avatar, 1, googleId);
+                        int roleId = 1;
+                        User userInfo = new User(null,fullname, email, avatar, roleId, googleId);
                         UserRepository userRepository = new UserRepository(getApplicationContext());
                         boolean check = userRepository.checkExistIdGoogle(googleId);
 
+                        // Lưu thông tin người dùng vào session
+                        SessionManager sessionManager = new SessionManager(this);
+                        sessionManager.saveUserSession(googleId, email, fullname,roleId);
+
                         if (!check) {
-                            Toast.makeText(this, "Not found " + googleId, Toast.LENGTH_SHORT).show();
+                            //người dùng k tòn tại chuyển đến activity OptionRole
                             userRepository.register(userInfo);
+                            // Chuyển đến activity tiếp theo sau khi đăng nhập thành công
+                            Intent intent = new Intent(LoginActivity.this, OptionRole.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(this, "Welcome!!!", Toast.LENGTH_SHORT).show();
+                            //nếu người dùng tồn tại chuyển đến main activity
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
                         }
 
-                        // Lưu thông tin người dùng vào SharedPreferences
-                        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("fullname", fullname);
-                        editor.putString("email", email);
-                        editor.putString("avatar", avatar);
-                        editor.putInt("role", 0); // Đổi role nếu cần thiết
-                        editor.putString("googleId", googleId);
-                        editor.apply();
-
-                        // Chuyển đến activity tiếp theo sau khi đăng nhập thành công
-                        Intent intent = new Intent(LoginActivity.this, OptionRole.class);
-                        startActivity(intent);
                     } else {
                         // Đăng nhập thất bại, hiển thị thông báo cho người dùng
                         Toast.makeText(this, "Failed to sign in: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

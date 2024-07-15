@@ -3,20 +3,16 @@ package com.example.echobeat;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.echobeat.activity.LoginActivity;
 import com.example.echobeat.activity.SettingsActivity;
-import com.example.echobeat.firebase.SeedData;
+import com.example.echobeat.dbFirebase.SeedData;
 import com.example.echobeat.fragment.HomeFragment;
 import com.example.echobeat.fragment.LibraryFragment;
 import com.example.echobeat.fragment.SearchFragment;

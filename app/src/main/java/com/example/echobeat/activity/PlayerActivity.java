@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -15,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.echobeat.R;
-import com.example.echobeat.firebase.FirebaseHelper;
-import com.example.echobeat.model.Song;
+import com.example.echobeat.dbFirebase.FirebaseHelper;
+import com.example.echobeat.modelFirebase.Song;
 
 import java.io.IOException;
 

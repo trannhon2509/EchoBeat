@@ -17,11 +17,11 @@ import android.widget.TextView;
 
 import com.example.echobeat.R;
 import com.example.echobeat.apdater.SearchResultsAdapter;
-import com.example.echobeat.firebase.FirebaseHelper;
-import com.example.echobeat.model.Album;
-import com.example.echobeat.model.Artist;
-import com.example.echobeat.model.ResultSearch;
-import com.example.echobeat.model.Song;
+import com.example.echobeat.dbFirebase.FirebaseHelper;
+import com.example.echobeat.modelFirebase.Album;
+import com.example.echobeat.modelFirebase.Artist;
+import com.example.echobeat.modelFirebase.ResultSearch;
+import com.example.echobeat.modelFirebase.Song;
 
 import java.util.ArrayList;
 import java.util.List;

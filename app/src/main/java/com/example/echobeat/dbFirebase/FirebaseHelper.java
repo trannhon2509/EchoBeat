@@ -1,13 +1,13 @@
-package com.example.echobeat.firebase;
+package com.example.echobeat.dbFirebase;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.echobeat.model.Album;
-import com.example.echobeat.model.Playlist;
-import com.example.echobeat.model.ResultSearch;
-import com.example.echobeat.model.Song;
+import com.example.echobeat.modelFirebase.Album;
+import com.example.echobeat.modelFirebase.Playlist;
+import com.example.echobeat.modelFirebase.ResultSearch;
+import com.example.echobeat.modelFirebase.Song;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

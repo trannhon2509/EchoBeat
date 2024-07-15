@@ -1,4 +1,4 @@
-package com.example.echobeat.model;
+package com.example.echobeat.modelFirebase;
 
 public class Role {
     private int roleId;

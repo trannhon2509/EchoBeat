@@ -1,4 +1,4 @@
-package com.example.echobeat.model;
+package com.example.echobeat.modelFirebase;
 
 import java.util.Date;
 

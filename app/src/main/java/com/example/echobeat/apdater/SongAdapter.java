@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.echobeat.R;
-import com.example.echobeat.model.Song;
+import com.example.echobeat.modelFirebase.Song;
 
 import java.util.List;
 

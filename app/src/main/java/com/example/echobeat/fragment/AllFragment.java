@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.echobeat.R;
@@ -21,11 +20,11 @@ import com.example.echobeat.apdater.AlbumAdapter;
 import com.example.echobeat.apdater.ArtistAdapter;
 import com.example.echobeat.apdater.HistoryApdater;
 import com.example.echobeat.apdater.SongAdapter;
-import com.example.echobeat.firebase.FirebaseHelper;
-import com.example.echobeat.model.Album;
-import com.example.echobeat.model.Artist;
-import com.example.echobeat.model.History;
-import com.example.echobeat.model.Song;
+import com.example.echobeat.dbFirebase.FirebaseHelper;
+import com.example.echobeat.modelFirebase.Album;
+import com.example.echobeat.modelFirebase.Artist;
+import com.example.echobeat.modelFirebase.History;
+import com.example.echobeat.modelFirebase.Song;
 import com.example.echobeat.viewModel.AllFragmentViewModel;
 
 import java.util.ArrayList;

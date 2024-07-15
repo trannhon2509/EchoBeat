@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.echobeat.R;
-import com.example.echobeat.model.Artist;
-import com.squareup.picasso.Picasso;
+import com.example.echobeat.modelFirebase.Artist;
 
 import java.util.List;
 

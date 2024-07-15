@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echobeat.R;
-import com.example.echobeat.model.ResultSearch;
+import com.example.echobeat.modelFirebase.ResultSearch;
 
 import java.util.List;
 

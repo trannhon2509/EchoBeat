@@ -1,6 +1,6 @@
 package com.example.echobeat.activity;
 
-import static com.example.echobeat.firebase.SeedData.getRandomDate;
+import static com.example.echobeat.dbFirebase.SeedData.getRandomDate;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,15 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.echobeat.R;
-import com.example.echobeat.firebase.FirebaseHelper;
-import com.example.echobeat.model.Song;
+import com.example.echobeat.dbFirebase.FirebaseHelper;
+import com.example.echobeat.modelFirebase.Song;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.util.Date;
 
 public class UploadSong extends AppCompatActivity {
 

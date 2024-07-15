@@ -1,16 +1,16 @@
-package com.example.echobeat.firebase;
+package com.example.echobeat.dbFirebase;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.echobeat.model.Album;
-import com.example.echobeat.model.Artist;
-import com.example.echobeat.model.Category;
-import com.example.echobeat.model.History;
-import com.example.echobeat.model.Playlist;
-import com.example.echobeat.model.Song;
-import com.example.echobeat.model.User;
+import com.example.echobeat.modelFirebase.Album;
+import com.example.echobeat.modelFirebase.Artist;
+import com.example.echobeat.modelFirebase.Category;
+import com.example.echobeat.modelFirebase.History;
+import com.example.echobeat.modelFirebase.Playlist;
+import com.example.echobeat.modelFirebase.Song;
+import com.example.echobeat.modelFirebase.User;
 
 import java.util.Arrays;
 import java.util.Calendar;

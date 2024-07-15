@@ -1,9 +1,7 @@
-package com.example.echobeat.model;
+package com.example.echobeat.modelFirebase;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import java.util.Date;
 

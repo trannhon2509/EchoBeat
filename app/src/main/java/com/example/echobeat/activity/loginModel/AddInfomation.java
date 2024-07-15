@@ -13,11 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
-import com.example.echobeat.Repository.ArtistRepository;
-import com.example.echobeat.Repository.UserRepository;
-import com.example.echobeat.model.Artist;
+import com.example.echobeat.repository.ArtistRepository;
+import com.example.echobeat.repository.UserRepository;
+import com.example.echobeat.session.SessionManager;
+import com.example.echobeat.modelSqlite.Artist;
+
 
 public class AddInfomation extends AppCompatActivity {
+
     private ImageButton back;
     private EditText et_name;
 
@@ -64,20 +67,19 @@ public class AddInfomation extends AppCompatActivity {
 
             // Create a new Artist object
             Artist artist = new Artist();
-            // Assuming you get the userId from an existing user session or intent
-//            User user = new User(); // You might need to get the actual user information from somewhere
-//
-//            // Retrieve the userId
-//            String userId = user.getUserId();
-            String userId = getIntent().getStringExtra("USER_ID");
+
+            SessionManager sessionManager = new SessionManager(this);
+            String googleId = sessionManager.getGoogleId();
+            String userId = userRepository.getUserIdByGoogleId(googleId);
+
             if (userId == null || userId.isEmpty()) {
                 Toast.makeText(this, "User ID is missing!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             artist.setUserId(userId);
-            artist.setUsername(name);
-            artist.setBio(biography);
+            artist.setArtistName(name);
+            artist.setBiography(biography);
 
             // Save artist information
             boolean isSaved = artistRepository.saveArtist(artist);
@@ -97,6 +99,9 @@ public class AddInfomation extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Failed to save artist information!", Toast.LENGTH_SHORT).show();
             }
+            int newRoleId = 2; // Ví dụ, thay đổi roleId thành 2
+            sessionManager.updateRoleId(newRoleId);
+
         });
 
 
