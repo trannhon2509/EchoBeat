@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "366067854706",
-    "project_id": "echobeat-bbd1f",
-    "storage_bucket": "echobeat-bbd1f.appspot.com"
+    "project_number": "925472039332",
+    "project_id": "melodymixx-75d21",
+    "storage_bucket": "melodymixx-75d21.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:366067854706:android:67dbecfd4510c2ef8d81eb",
+        "mobilesdk_app_id": "1:925472039332:android:30b286bd90125b4bb06131",
         "android_client_info": {
           "package_name": "com.example.echobeat"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDgtbiZvbFODuQL0VujOuDO6VoM6akdaxc"
+          "current_key": "AIzaSyDB6dsqxZeNWNGlQSsFA_kQtLZR8ZfDlBM"
         }
       ],
       "services": {
