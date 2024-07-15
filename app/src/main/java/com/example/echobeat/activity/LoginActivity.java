@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
+import com.example.echobeat.dbFirebase.FirebaseHelper;
 import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.activity.loginModel.OptionRole;
 import com.example.echobeat.modelSqlite.User;
@@ -32,6 +33,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseHelper<com.example.echobeat.modelFirebase.User> userHelper;
+
+
 
 
     @Override
@@ -39,17 +43,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
+        /*xu ly logic , kiem tra(( userid trong sqllite ton tai) va ( => den man roleoption
+
+
+         */
+
         auth = FirebaseAuth.getInstance();
         googleSignInButton = findViewById(R.id.google_sign_in_button);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googleSignInButton.setOnClickListener(v -> {
             googleSingIn();
         });
+
     }
     private void googleSingIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -93,17 +103,15 @@ public class LoginActivity extends AppCompatActivity {
                         String avatar = user.getPhotoUrl().toString();
                         String googleId = user.getUid();
                         int roleId = 1;
-                        User userInfo = new User(null,fullname, email, avatar, roleId, googleId);
-                        UserRepository userRepository = new UserRepository(getApplicationContext());
-                        boolean check = userRepository.checkExistIdGoogle(googleId);
 
                         // Lưu thông tin người dùng vào session
                         SessionManager sessionManager = new SessionManager(this);
-                        sessionManager.saveUserSession(googleId, email, fullname,roleId);
+                        sessionManager.saveUserSession(googleId,googleId, email, fullname,roleId,avatar);
 
+                        UserRepository userRepository = new UserRepository(getApplicationContext());
+                        boolean check = userRepository.checkExistIdGoogle(googleId);
                         if (!check) {
-                            //người dùng k tòn tại chuyển đến activity OptionRole
-                            userRepository.register(userInfo);
+
                             // Chuyển đến activity tiếp theo sau khi đăng nhập thành công
                             Intent intent = new Intent(LoginActivity.this, OptionRole.class);
                             startActivity(intent);

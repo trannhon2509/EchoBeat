@@ -256,6 +256,8 @@ public class FirebaseHelper<T> {
                 });
     }
 
+
+    public void UpdateArtist(){}
     private interface CollectionExistsCallback {
         void onCallback(boolean exists);
     }

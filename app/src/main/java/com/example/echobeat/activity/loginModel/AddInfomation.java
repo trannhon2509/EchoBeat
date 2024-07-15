@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
+import com.example.echobeat.dbFirebase.FirebaseHelper;
+import com.example.echobeat.modelSqlite.User;
 import com.example.echobeat.repository.ArtistRepository;
 import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.session.SessionManager;
@@ -28,6 +30,7 @@ public class AddInfomation extends AppCompatActivity {
     private Button next;
     private ArtistRepository artistRepository;
     private UserRepository userRepository;
+    private FirebaseHelper<com.example.echobeat.modelFirebase.User> userHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,14 @@ public class AddInfomation extends AppCompatActivity {
         et_biography = findViewById(R.id.et_biography);
         next = findViewById(R.id.btn_next);
 
+        SessionManager sessionManager = new SessionManager(this);
+        String googleId = sessionManager.getGoogleId();
+        String userId = sessionManager.getUserid();
+        String userName = sessionManager.getUsername();
+        String email = sessionManager.getEmail();
+        String image = sessionManager.getImage();
+        int roleId =sessionManager.getRoleId();
+
         // Set up back button listener
         back.setOnClickListener(v -> {
             Intent intent = new Intent(AddInfomation.this, OptionRole.class);
@@ -64,43 +75,33 @@ public class AddInfomation extends AppCompatActivity {
                 Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
+            //luu user vao sql lite
+            User userInfo = new User(userId,userName, email, image, 2, googleId);
+            UserRepository userRepository = new UserRepository(getApplicationContext());
+            userRepository.register(userInfo);
+            //luu user vao firebase
+            com.example.echobeat.modelFirebase.User userfb = new com.example.echobeat.modelFirebase.User(userId,userName, email, image, 2, googleId);
+            userHelper.addData("users", userfb);
+            //cap nhat roleId o session
+            int newRoleId = 2;
+            sessionManager.updateRoleId(newRoleId);
 
             // Create a new Artist object
             Artist artist = new Artist();
-
-            SessionManager sessionManager = new SessionManager(this);
-            String googleId = sessionManager.getGoogleId();
-            String userId = userRepository.getUserIdByGoogleId(googleId);
-
-            if (userId == null || userId.isEmpty()) {
-                Toast.makeText(this, "User ID is missing!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             artist.setUserId(userId);
             artist.setArtistName(name);
             artist.setBiography(biography);
-
-            // Save artist information
+            //luu ca si vao fire base
+            //...................
+            // luu ca si vao sql lite
             boolean isSaved = artistRepository.saveArtist(artist);
-
             if (isSaved) {
-                // Update user role to 2
-                boolean isUpdated = userRepository.updateRole(userId);
-
-                if (isUpdated) {
                     Toast.makeText(this, "Artist information saved successfully!", Toast.LENGTH_SHORT).show();
-                    // Optionally, navigate to another activity
                     Intent intent = new Intent(AddInfomation.this, MainActivity.class);
                     startActivity(intent);
-                } else {
-                    Toast.makeText(this, "Failed to update user role!", Toast.LENGTH_SHORT).show();
-                }
             } else {
                 Toast.makeText(this, "Failed to save artist information!", Toast.LENGTH_SHORT).show();
             }
-            int newRoleId = 2; // Ví dụ, thay đổi roleId thành 2
-            sessionManager.updateRoleId(newRoleId);
 
         });
 

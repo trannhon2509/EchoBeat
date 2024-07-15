@@ -78,7 +78,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Create User table with foreign key to ROLE table
         String createUserTable = "CREATE TABLE " + TB_USER + " ("
-                + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+//                + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_USER_ID + " TEXT , "
                 + COLUMN_USERNAME + " TEXT, "
                 + COLUMN_EMAIL + " TEXT, "
 
@@ -89,7 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Create Artist table with foreign key to USER table
         String createArtistTable = "CREATE TABLE " + TB_ARTIST + " ("
-                + COLUMN_USER_ID + " INTEGER PRIMARY KEY, "
+                + COLUMN_USER_ID + " TEXT PRIMARY KEY, "
                 + COLUMN_ARTIST_NAME + " TEXT, "
                 + COLUMN_BIOGRAPHY + " TEXT, "
                 + "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TB_USER + "(" + COLUMN_USER_ID + "))";
@@ -97,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create Album table with foreign keys to ARTIST and SONG tables
         String createAlbumTable = "CREATE TABLE " + TB_ALBUM + " ("
                 + COLUMN_ALBUM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_USER_ID + " INTEGER, "
+                + COLUMN_USER_ID + " TEXT, "
                 + COLUMN_SONG_ID + " INTEGER, "
                 + COLUMN_RELEASE_YEAR + " INTEGER, "
                 + "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TB_ARTIST + "(" + COLUMN_USER_ID + "), "
@@ -106,7 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create Song table with foreign keys to USER and CATEGORY tables
         String createSongTable = "CREATE TABLE " + TB_SONG + " ("
                 + COLUMN_SONG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_USER_ID + " INTEGER, "
+                + COLUMN_USER_ID + " TEXT, "
                 + COLUMN_SONG_URL + " TEXT, "
                 + COLUMN_TITLE + " TEXT, "
                 + COLUMN_DURATION + " INTEGER, "
@@ -124,7 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create Playlist table with foreign key to USER table
         String createPlaylistTable = "CREATE TABLE " + TB_PLAYLIST + " ("
                 + COLUMN_PLAYLIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_USER_ID + " INTEGER, "
+                + COLUMN_USER_ID + " TEXT, "
                 + COLUMN_PICTURE_PLAYLIST + " TEXT, "
                 + COLUMN_PLAYLIST_NAME + " TEXT, "
                 + "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TB_USER + "(" + COLUMN_USER_ID + "))";
@@ -142,7 +143,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createHistoryTable = "CREATE TABLE " + TB_HISTORY + " ("
                 + COLUMN_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_SONG_ID + " INTEGER, "
-                + COLUMN_USER_ID + " INTEGER, "
+                + COLUMN_USER_ID + " TEXT, "
                 + "FOREIGN KEY(" + COLUMN_SONG_ID + ") REFERENCES " + TB_SONG + "(" + COLUMN_SONG_ID + "), "
                 + "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TB_USER + "(" + COLUMN_USER_ID + "))";
 

@@ -9,11 +9,14 @@ public class SessionManager {
     private Context context;
 
     private static final String PREF_NAME = "UserSession";
+    private static final String KEY_USERID = "userId";
     private static final String KEY_GOOGLEID = "googleId";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_USERNAME = "username";
 
     private static final String KEY_ROLE_ID = "roleId";
+
+    private static final String KEY_IMAGE = "image";
 
     public SessionManager(Context context) {
         this.context = context;
@@ -21,14 +24,18 @@ public class SessionManager {
         editor = sharedPreferences.edit();
     }
 
-    public void saveUserSession(String googleId, String email, String username, int roleId) {
+    public void saveUserSession(String userId,String googleId, String email, String username, int roleId,String image) {
+        editor.putString(KEY_USERID, userId);
         editor.putString(KEY_GOOGLEID, googleId);
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_USERNAME, username);
         editor.putInt(KEY_ROLE_ID, roleId);
+        editor.putString(KEY_IMAGE, image);
         editor.commit();
     }
-
+    public String getUserid() {
+        return sharedPreferences.getString(KEY_USERID, null);
+    }
     public String getGoogleId() {
         return sharedPreferences.getString(KEY_GOOGLEID, null);
     }
@@ -40,7 +47,9 @@ public class SessionManager {
     public String getUsername() {
         return sharedPreferences.getString(KEY_USERNAME, null);
     }
-
+    public String getImage() {
+        return sharedPreferences.getString(KEY_IMAGE, null);
+    }
     public int getRoleId() {
         return sharedPreferences.getInt(KEY_ROLE_ID, -1); // -1 là giá trị mặc định nếu không tìm thấy
     }
