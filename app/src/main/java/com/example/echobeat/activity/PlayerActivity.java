@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -98,7 +97,7 @@ public class PlayerActivity extends AppCompatActivity {
             // Update current time and seek bar progress
             updateSeekBar();
         });
-        // Thiết lập sự kiện onCompletionListener của MediaPlayer
+
         mediaPlayer.setOnCompletionListener(mp -> {
             if (randomSongsList.isEmpty() || currentRandomIndex >= randomSongsList.size()) {
                 // Lấy bộ 5 bài hát ngẫu nhiên mới từ Firebase
@@ -121,8 +120,6 @@ public class PlayerActivity extends AppCompatActivity {
                 playRandomSongs();
             }
         });
-
-
 
         buttonPlay.setOnClickListener(v -> {
             if (songUrl != null) {
@@ -153,14 +150,17 @@ public class PlayerActivity extends AppCompatActivity {
                 // Display an error message or handle accordingly
             }
         });
+
         buttonShuffle.setOnClickListener(v -> {
             isShuffling = !isShuffling;
             if (isShuffling) {
                 buttonShuffle.setImageResource(R.drawable.baseline_shuffle);
                 // Fetch initial set of random songs
                 fetchRandomSongs();
+                buttonRepeat.setEnabled(false);
             } else {
                 buttonShuffle.setImageResource(R.drawable.baseline_shuffleoff);
+                buttonRepeat.setEnabled(true);
             }
         });
 
@@ -170,9 +170,11 @@ public class PlayerActivity extends AppCompatActivity {
             if (isRepeating) {
                 buttonRepeat.setImageResource(R.drawable.baseline_repeatone);
                 mediaPlayer.setLooping(true);
+                buttonShuffle.setEnabled(false);
             } else {
                 buttonRepeat.setImageResource(R.drawable.baseline_repeat);
                 mediaPlayer.setLooping(false);
+                buttonShuffle.setEnabled(true);
             }
         });
 
@@ -198,15 +200,11 @@ public class PlayerActivity extends AppCompatActivity {
             playNextSong();
         });
 
-
-
-
         buttonPrevious.setOnClickListener(v -> {
             playPreviousSong();
         });
-
-
     }
+
     private void fetchRandomSongs() {
         firebaseHelper.getRandomSongs(5, new FirebaseHelper.DataCallback<Song>() {
             @Override
@@ -223,6 +221,7 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
     }
+
     private void playRandomSongs() {
         if (!randomSongsList.isEmpty() && currentRandomIndex < randomSongsList.size()) {
             Song nextSong = randomSongsList.get(currentRandomIndex);
@@ -297,6 +296,7 @@ public class PlayerActivity extends AppCompatActivity {
             mediaPlayer.setLooping(false);
         }
     }
+
     private void playPreviousSong() {
         if (currentSongIndex <= 0) {
             // Fetch new set of 5 random songs for previous songs
@@ -345,9 +345,6 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     private void startPlayback() {
         // Start playback logic
         isPlaying = true;
@@ -395,8 +392,6 @@ public class PlayerActivity extends AppCompatActivity {
         }).start();
     }
 
-
-
     // Helper method to convert milliseconds to time format (mm:ss)
     private String millisecondsToTimer(long milliseconds) {
         String timerString = "";
@@ -419,5 +414,4 @@ public class PlayerActivity extends AppCompatActivity {
         timerString = timerString + minutes + ":" + secondsString;
         return timerString;
     }
-
 }
