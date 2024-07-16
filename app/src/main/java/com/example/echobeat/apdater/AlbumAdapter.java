@@ -19,8 +19,11 @@ import java.util.List;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Album> albums;
+
+
+    private final Context context;
+    private final List<Album> albums;
+    private OnItemClickListener listener;
 
     public AlbumAdapter(Context context, List<Album> albums) {
         this.context = context;
@@ -47,6 +50,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
                         .placeholder(R.drawable.ic_loading) // Hình ảnh thay thế khi đang tải
                         .error(R.drawable.ic_album)) // Hình ảnh thay thế khi tải lỗi
                 .into(holder.albumImage);
+
     }
 
     @Override
@@ -54,7 +58,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         return albums.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView albumTitle;
         ImageView albumImage;
 
@@ -62,6 +66,24 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             super(itemView);
             albumTitle = itemView.findViewById(R.id.album_title);
             albumImage = itemView.findViewById(R.id.album_image);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(albums.get(position));
+                    }
+                }
+            });
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Album album);
     }
 }

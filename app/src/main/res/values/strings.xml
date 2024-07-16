@@ -46,5 +46,13 @@
         <item>ALL</item>
     </string-array>
 
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_search">Search\n</string>
+    <string name="nav_item_library">Library</string>
+    <string name="nav_item_setting">Setting</string>
+    <string name="nav_item_avatar">Avatar</string>
+    <string name="nav_profile">Avatar</string>
+
+
     <string name="default_web_client_id">369502477444-uju6iqrhkllvn4qthp6c00o6mkqrekln.apps.googleusercontent.com</string>
 </resources>

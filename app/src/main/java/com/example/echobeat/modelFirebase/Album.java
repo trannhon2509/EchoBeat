@@ -1,8 +1,13 @@
 package com.example.echobeat.modelFirebase;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 
-public class Album {
+public class Album implements Parcelable {
     private String albumId;
     private int artistId;
     private String title;
@@ -21,6 +26,28 @@ public class Album {
         this.coverImage = coverImage;
         this.genreId = genreId;
     }
+
+    protected Album(Parcel in) {
+        albumId = in.readString();
+        artistId = in.readInt();
+        title = in.readString();
+        // Đối với kiểu Date, bạn có thể sử dụng Long để đại diện cho timestamp
+        releaseYear = new Date(in.readLong());
+        coverImage = in.readString();
+        genreId = in.readInt();
+    }
+
+    public static final Creator<Album> CREATOR = new Creator<Album>() {
+        @Override
+        public Album createFromParcel(Parcel in) {
+            return new Album(in);
+        }
+
+        @Override
+        public Album[] newArray(int size) {
+            return new Album[size];
+        }
+    };
 
     public String getAlbumId() {
         return albumId;
@@ -68,5 +95,21 @@ public class Album {
 
     public void setGenreId(int genreId) {
         this.genreId = genreId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int i) {
+        dest.writeString(albumId);
+        dest.writeInt(artistId);
+        dest.writeString(title);
+        // Đối với kiểu Date, bạn có thể sử dụng getTime() để lấy timestamp
+        dest.writeLong(releaseYear.getTime());
+        dest.writeString(coverImage);
+        dest.writeInt(genreId);
     }
 }

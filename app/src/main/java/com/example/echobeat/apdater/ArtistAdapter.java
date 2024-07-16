@@ -14,13 +14,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.echobeat.R;
 import com.example.echobeat.modelFirebase.Artist;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Artist> artists;
+    private final Context context;
+    private final List<Artist> artists;
+    private OnItemClickListener listener;
 
     public ArtistAdapter(Context context, List<Artist> artists) {
         this.context = context;
@@ -53,7 +55,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
         return artists.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView artistName;
         ImageView artistImage;
 
@@ -62,6 +64,24 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
             super(itemView);
             artistName = itemView.findViewById(R.id.artist_name);
             artistImage = itemView.findViewById(R.id.artist_image);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(artists.get(position));
+                    }
+                }
+            });
         }
+    }
+
+    public void setOnItemClickListener(ArtistAdapter.OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Artist artist);
     }
 }

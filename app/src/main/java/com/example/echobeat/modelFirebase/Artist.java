@@ -2,7 +2,7 @@ package com.example.echobeat.modelFirebase;
 
 import java.util.List;
 
-public class Artist extends User {
+public class Artist extends User implements Parcelable {
     private String artistId;
 
     private String artistName;
@@ -31,6 +31,25 @@ public class Artist extends User {
     public void setArtistName(String artistName) {
         this.artistName = artistName;
     }
+    protected Artist(Parcel in) {
+        artistId = in.readString();
+        bio = in.readString();
+        songIds = in.createStringArrayList();
+        musicGenre = in.readString();
+    }
+
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
+
     public String getArtistId() {
         return artistId;
     }
@@ -61,5 +80,18 @@ public class Artist extends User {
 
     public void setMusicGenre(String musicGenre) {
         this.musicGenre = musicGenre;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(artistId);
+        parcel.writeString(bio);
+        parcel.writeStringList(songIds);
+        parcel.writeString(musicGenre);
     }
 }

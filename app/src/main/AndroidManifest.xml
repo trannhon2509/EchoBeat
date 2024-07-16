@@ -13,12 +13,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EchoBeat"
         tools:targetApi="31">
-        <!-- UploadSong Activity as MAIN and LAUNCHER -->
+        <activity
+            android:name=".activity.ArtisSongActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AlbumDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.UploadSong"
             android:exported="false">
 
         </activity>
+
         <activity
             android:name=".activity.SongShareActivity"
             android:exported="false" />

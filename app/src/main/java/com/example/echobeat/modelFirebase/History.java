@@ -1,8 +1,13 @@
 package com.example.echobeat.modelFirebase;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 
-public class History {
+public class History implements Parcelable {
     private String id;
     private String type; // Loại (song, album, playlist)
     private String itemId; // ID của bài hát, album hoặc playlist
@@ -22,6 +27,27 @@ public class History {
         this.coverImage = coverImage;
         this.timestamp = timestamp;
     }
+
+    protected History(Parcel in) {
+        id = in.readString();
+        type = in.readString();
+        itemId = in.readString();
+        title = in.readString();
+        coverImage = in.readString();
+        timestamp = new Date(in.readLong());
+    }
+
+    public static final Creator<History> CREATOR = new Creator<History>() {
+        @Override
+        public History createFromParcel(Parcel in) {
+            return new History(in);
+        }
+
+        @Override
+        public History[] newArray(int size) {
+            return new History[size];
+        }
+    };
 
     public Date getTimestamp() {
         return timestamp;
@@ -69,5 +95,20 @@ public class History {
 
     public void setCoverImage(String coverImage) {
         this.coverImage = coverImage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(type);
+        parcel.writeString(itemId);
+        parcel.writeString(title);
+        parcel.writeString(coverImage);
+        parcel.writeLong(timestamp.getTime());
     }
 }
