@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,40 +15,51 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EchoBeat"
         tools:targetApi="31">
-
-        <!-- UploadSong Activity as MAIN and LAUNCHER -->
         <activity
             android:name=".activity.UploadSong"
+            android:exported="true" />
+        <!-- UploadSong Activity as MAIN and LAUNCHER -->
+        <activity
+            android:name=".activity.UploadAlbum"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.SongShareActivity"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".activity.loginModel.OptionRole"
+            android:exported="true" />
+        <activity
+            android:name=".activity.loginModel.AddInfomation"
+            android:exported="true" />
         <activity
             android:name=".activity.TrackActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activity.PlayerActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activity.LoginActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activity.SettingsActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

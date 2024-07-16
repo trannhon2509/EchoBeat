@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
+import com.example.echobeat.activity.UploadSong;
 import com.example.echobeat.repository.ArtistRepository;
 import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.session.SessionManager;
@@ -91,7 +92,7 @@ public class AddInfomation extends AppCompatActivity {
                 if (isUpdated) {
                     Toast.makeText(this, "Artist information saved successfully!", Toast.LENGTH_SHORT).show();
                     // Optionally, navigate to another activity
-                    Intent intent = new Intent(AddInfomation.this, MainActivity.class);
+                    Intent intent = new Intent(AddInfomation.this, UploadSong.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "Failed to update user role!", Toast.LENGTH_SHORT).show();

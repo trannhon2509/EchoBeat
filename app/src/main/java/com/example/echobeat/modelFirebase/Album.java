@@ -10,6 +10,8 @@ public class Album {
     private String coverImage;
     private int genreId;
 
+
+
     // Constructors, getters, and setters
     public Album() {}
 

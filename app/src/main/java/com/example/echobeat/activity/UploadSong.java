@@ -1,7 +1,6 @@
 package com.example.echobeat.activity;
 
-import static com.example.echobeat.dbFirebase.SeedData.getRandomDate;
-
+import static com.example.echobeat.dbFirebase.SeedData.getCurrentDateTime;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,18 +14,20 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
 import com.example.echobeat.R;
 import com.example.echobeat.dbFirebase.FirebaseHelper;
 import com.example.echobeat.modelFirebase.Song;
+import com.example.echobeat.repository.UserRepository;
+import com.example.echobeat.session.SessionManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.UUID;
 
 public class UploadSong extends AppCompatActivity {
 
@@ -40,6 +41,7 @@ public class UploadSong extends AppCompatActivity {
     private Uri songUri;
     private Uri imageUri;
     private FirebaseHelper<Song> firebaseHelper;
+    private final UserRepository userRepository = new UserRepository(getApplicationContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,11 +184,18 @@ public class UploadSong extends AppCompatActivity {
                                 String songDownloadUrl = uri.toString();
                                 Song song = new Song();
                                 song.setSongUrl(songDownloadUrl);
-                                song.setSongId(String.valueOf(2));
+                                //create song id
+                                String uniqueSongId = UUID.randomUUID().toString();
+                                song.setSongId(uniqueSongId);
+                                //get user id from session
+//                                SessionManager sessionManager = new SessionManager(UploadSong.this);
+//                                String googleId = sessionManager.getGoogleId();
+//                                String userId = userRepository.getUserIdByGoogleId(googleId);
                                 song.setUserId(String.valueOf(1));
                                 song.setTitle(etSongTitle.getText().toString());
                                 song.setDuration(220);
-                                song.setReleaseYear(getRandomDate());
+                                //get the current datetime
+                                song.setReleaseYear(getCurrentDateTime());
                                 song.setPictureSong(imageUrl);
                                 song.setCategoryId(String.valueOf(1));
                                 firebaseHelper.addData("songs", song);

@@ -8,6 +8,8 @@ public class Artist extends User {
     private List<String> songIds;
     private String musicGenre;
 
+
+
     // Constructors, getters, and setters
     public Artist() {
         super();

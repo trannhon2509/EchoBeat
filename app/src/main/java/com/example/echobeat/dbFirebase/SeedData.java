@@ -12,10 +12,12 @@ import com.example.echobeat.modelFirebase.Playlist;
 import com.example.echobeat.modelFirebase.Song;
 import com.example.echobeat.modelFirebase.User;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class SeedData {
@@ -41,13 +43,13 @@ public class SeedData {
     }
 
     public void seedAllData() {
-        seedAlbums(10); // Truyền số lượng album cần tạo vào đây
-        seedArtists(15); // Truyền số lượng nghệ sĩ cần tạo vào đây
-        seedCategories(8); // Truyền số lượng danh mục cần tạo vào đây
-        seedPlaylists(10); // Truyền số lượng playlist cần tạo vào đây
-        seedSongs(5); // Truyền số lượng bài hát cần tạo vào đây
-        seedUsers(10); // Truyền số lượng người dùng cần tạo vào đây
-        seedHistory(100);
+//        seedAlbums(10); // Truyền số lượng album cần tạo vào đây
+//        seedArtists(15); // Truyền số lượng nghệ sĩ cần tạo vào đây
+//        seedCategories(8); // Truyền số lượng danh mục cần tạo vào đây
+//        seedPlaylists(10); // Truyền số lượng playlist cần tạo vào đây
+//        seedSongs(5); // Truyền số lượng bài hát cần tạo vào đây
+//        seedUsers(10); // Truyền số lượng người dùng cần tạo vào đây
+//        seedHistory(100);
     }
 
     private void seedHistory(int count) {
@@ -101,9 +103,6 @@ public class SeedData {
     }
 
 
-
-
-
     private void seedAlbums(int count) {
         for (int i = 1; i <= count; i++) {
             String albumId = i+"";
@@ -132,7 +131,11 @@ public class SeedData {
         Date releaseYear = new Date(randomMillis);
         return releaseYear;
     }
-
+    public static @NonNull Date getCurrentDateTime() {
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
+        return currentDate;
+    }
 
     private void seedArtists(int count) {
         for (int i = 1; i <= count; i++) {
@@ -161,10 +164,6 @@ public class SeedData {
         return sb.toString();
     }
 
-
-
-
-
     private void seedCategories(int count) {
         for (int i = 1; i <= count; i++) {
             Category category = new Category(i, "Category " + i);
@@ -187,28 +186,25 @@ public class SeedData {
         }
     }
 
-
-
-
-    private void seedSongs(int count) {
-        Random random = new Random();
-
-        for (int i = 1; i <= count; i++) {
-            String userId = getRandomUserIdAsString();
-            String songUrl = "https://firebasestorage.googleapis.com/v0/b/echobeat-bbd1f.appspot.com/o/dung-lam-trai-tim-anh-dau-piano-khong-loi.mp3?alt=media&token=7528e94b-7f53-4b8a-8c14-f623c1d52c37";
-            String songTitle = generateRandomName(3) + " " +generateRandomName(3) + " " + generateRandomName(3);
-            int songDuration = 180 + (i * 10); // incrementing duration
-            Date releaseYear = getRandomDate();
-            String pictureSong = "https://th.bing.com/th/id/OIP.4Acoxt6K25NRPbtIVvxmQQAAAA?rs=1&pid=ImgDetMain";
-            String categoryId = getRandomCategoryIdAsString();
-
-            // Generate random play count between 0 and 1000
-            int playCount = random.nextInt(1001); // 0 to 1000
-
-            Song song = new Song(playCount, String.valueOf(i), userId, songUrl, songTitle, songDuration, releaseYear, pictureSong, categoryId);
-            songHelper.addData("songs", song);
-        }
-    }
+//    private void seedSongs(int count) {
+//        Random random = new Random();
+//
+//        for (int i = 1; i <= count; i++) {
+//            String userId = getRandomUserIdAsString();
+//            String songUrl = "https://firebasestorage.googleapis.com/v0/b/echobeat-bbd1f.appspot.com/o/dung-lam-trai-tim-anh-dau-piano-khong-loi.mp3?alt=media&token=7528e94b-7f53-4b8a-8c14-f623c1d52c37";
+//            String songTitle = generateRandomName(3) + " " +generateRandomName(3) + " " + generateRandomName(3);
+//            int songDuration = 180 + (i * 10); // incrementing duration
+//            Date releaseYear = getRandomDate();
+//            String pictureSong = "https://th.bing.com/th/id/OIP.4Acoxt6K25NRPbtIVvxmQQAAAA?rs=1&pid=ImgDetMain";
+//            String categoryId = getRandomCategoryIdAsString();
+//
+//            // Generate random play count between 0 and 1000
+//            int playCount = random.nextInt(1001); // 0 to 1000
+//
+//            Song song = new Song(playCount, String.valueOf(i), userId, songUrl, songTitle, songDuration, releaseYear, pictureSong, categoryId, album);
+//            songHelper.addData("songs", song);
+//        }
+//    }
 
 
 
