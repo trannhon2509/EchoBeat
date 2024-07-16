@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.echobeat.R;
+import com.example.echobeat.modelFirebase.Playlist;
 import com.example.echobeat.modelFirebase.Song;
+import com.example.echobeat.modelSqlite.ListPlaylist;
 
 import java.util.List;
 
@@ -21,6 +24,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     private final Context context;
     private final List<Song> songs;
+
     private OnItemClickListener listener;
 
     public SongAdapter(Context context, List<Song> songs) {
@@ -58,11 +62,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView songTitle;
         ImageView songImage;
-
+        Button btnAddToPlaylist;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.song_title);
             songImage = itemView.findViewById(R.id.song_image);
+            btnAddToPlaylist = itemView.findViewById(R.id.btnAddToPlaylist);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -20,6 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TB_HISTORY = "HISTORY";
     public static final String TB_ROLE = "ROLE";
 
+    public static final String TB_LIST_PLAYLIST = "LISTPLAYLIST";
+
     // Common column names
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_USER_ID = "USER_ID";
@@ -47,6 +49,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DURATION = "DURATION";
     public static final String COLUMN_PICTURE_SONG = "PICTURE_SONG";
     public static final String COLUMN_CATEGORY_ID = "CATEGORY_ID";
+
+
+    //Colums in List playlist
+    public static final String COLUMN_PL_SONG_ID = "PL_SONG_ID";
+    public static final String COLUMN_PL_SONG_URL = "PL_SONG_URL";
+    public static final String COLUMN_PL_TITLE = "PL_TITLE";
+    public static final String COLUMN_PL_PICTURE_SONG = "PL_PICTURE_SONG";
+
 
     // Columns in CATEGORY table
     public static final String COLUMN_CATEGORY_NAME = "CATEGORY_NAME";
@@ -117,6 +127,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TB_USER + "(" + COLUMN_USER_ID + "), "
                 + "FOREIGN KEY(" + COLUMN_CATEGORY_ID + ") REFERENCES " + TB_CATEGORY + "(" + COLUMN_ID + "))";
 
+        String CreateListPlaylistTable = "CREATE TABLE " + TB_LIST_PLAYLIST + " ("
+                + COLUMN_PL_SONG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_PL_SONG_URL + " TEXT, "
+                + COLUMN_PL_TITLE + " TEXT, "
+                + COLUMN_PL_PICTURE_SONG + " TEXT )";
+
         // Create Category table
         String createCategoryTable = "CREATE TABLE " + TB_CATEGORY + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -157,6 +173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createAlbumTable);
         db.execSQL(createPlaylistTable);
         db.execSQL(createPlaylistDetailTable);
+        db.execSQL(CreateListPlaylistTable);
 
         // Insert data into Role table
         String insertRole1 = "INSERT INTO " + TB_ROLE + " (" + COLUMN_ID + ", " + COLUMN_ROLE_NAME + ") VALUES (1, 'listener')";
@@ -176,6 +193,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TB_PLAYLIST);
         db.execSQL("DROP TABLE IF EXISTS " + TB_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS " + TB_SONG);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_LIST_PLAYLIST);
         db.execSQL("DROP TABLE IF EXISTS " + TB_ALBUM);
         db.execSQL("DROP TABLE IF EXISTS " + TB_ARTIST);
         db.execSQL("DROP TABLE IF EXISTS " + TB_USER);

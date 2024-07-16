@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.LibraryFragment">
+    android:layout_height="match_parent">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -12,19 +10,18 @@
         android:layout_height="56dp"
         android:background="@color/black"
         android:elevation="4dp"
-
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-        <!-- Circular ImageView -->
+        <!-- Left-aligned ImageView (Circular Image) -->
         <ImageView
-            android:id="@+id/toolbar_image"
+            android:id="@+id/imageView"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="start"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_circle"
-            android:scaleType="centerCrop" />
+            android:contentDescription="Library"
+            android:background="@drawable/ic_circle" />
 
         <!-- Title -->
         <TextView
@@ -38,5 +35,11 @@
             android:fontFamily="sans-serif-medium" />
 
     </androidx.appcompat.widget.Toolbar>
+    <!-- Container for Fragments -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar" />
 
-</FrameLayout>
+</RelativeLayout>

@@ -8,7 +8,7 @@
             android:id="@+id/menu_login"
             android:title="Login" />
         <item
-            android:id="@+id/menu_register"
-            android:title="Register" />
+            android:id="@+id/menu_logout"
+            android:title="Log out" />
     </group>
 </menu>
