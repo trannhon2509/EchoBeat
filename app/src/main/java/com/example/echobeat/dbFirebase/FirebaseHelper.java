@@ -256,6 +256,38 @@ public class FirebaseHelper<T> {
                 });
     }
 
+    public void getRandomSongs(final int count, final DataCallback<Song> callback) {
+        db.collection("songs")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Song> songs = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Song song = document.toObject(Song.class);
+                                songs.add(song);
+                            }
+                            if (songs.size() > 0) {
+                                Random random = new Random();
+                                List<Song> randomSongs = new ArrayList<>();
+                                for (int i = 0; i < count; i++) {
+                                    int randomIndex = random.nextInt(songs.size());
+                                    randomSongs.add(songs.get(randomIndex));
+                                    songs.remove(randomIndex);
+                                }
+                                callback.onCallback(randomSongs);
+                            } else {
+                                callback.onCallback(null); // Handle case when no songs are available
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                            callback.onCallback(null);
+                        }
+                    }
+                });
+    }
+
 
     public void UpdateArtist(){}
     private interface CollectionExistsCallback {
