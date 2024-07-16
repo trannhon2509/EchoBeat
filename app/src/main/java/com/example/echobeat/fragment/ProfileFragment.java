@@ -1,6 +1,7 @@
 package com.example.echobeat.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,9 +32,18 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerView;
     private PlaylistAdapter playlistAdapter;
     private List<Playlist> playlistList;
+    private List<Playlist> userPlaylist;
+    private int userId = 2;
+
+//    SessionManager sessionManager = new SessionManager(this);
+//    String googleId = sessionManager.getGoogleId();
+//    String userId = sessionManager.getUserid();
+    private static final String TAG = "ProfileFragment";
+
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,9 +51,10 @@ public class ProfileFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         playlistList = new ArrayList<>();
-        playlistAdapter = new PlaylistAdapter(getContext(), playlistList);
+        userPlaylist = new ArrayList<>();
+
+        playlistAdapter = new PlaylistAdapter(getContext(), userPlaylist);
         recyclerView.setAdapter(playlistAdapter);
 
         loadData();
@@ -59,9 +70,28 @@ public class ProfileFragment extends Fragment {
                 if (data != null) {
                     playlistList.clear();
                     playlistList.addAll(data);
+                    Log.d(TAG, "Loaded playlists: " + playlistList.size());
+
+                    userPlaylist.clear();
+                    for (Playlist p : playlistList) {
+                        if (p.getUserId() == userId) {
+                            userPlaylist.add(p);
+                        }
+                    }
+
+                    Log.d(TAG, "Filtered user playlists: " + userPlaylist.size());
                     playlistAdapter.notifyDataSetChanged();
+
+                    // Log the contents of playlistList and userPlaylist
+                    for (Playlist p : playlistList) {
+                        Log.d(TAG, "Playlist: " + p.getName() + ", UserId: " + p.getUserId());
+                    }
+                    for (Playlist p : userPlaylist) {
+                        Log.d(TAG, "User Playlist: " + p.getName() + ", UserId: " + p.getUserId());
+                    }
+
                 } else {
-                    // Handle the error
+                    Log.e(TAG, "Failed to load playlists.");
                 }
             }
         });
