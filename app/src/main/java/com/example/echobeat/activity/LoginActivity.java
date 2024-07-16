@@ -1,6 +1,9 @@
 package com.example.echobeat.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -8,13 +11,18 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
-import com.example.echobeat.dbFirebase.FirebaseHelper;
-import com.example.echobeat.repository.UserRepository;
+
 import com.example.echobeat.activity.loginModel.OptionRole;
-import com.example.echobeat.modelSqlite.User;
+
+import com.example.echobeat.dbFirebase.FirebaseHelper;
+import com.example.echobeat.modelFirebase.User;
+import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.session.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseHelper<com.example.echobeat.modelFirebase.User> userHelper;
+    private FirebaseHelper<User> userHelper;
 
 
 
@@ -45,10 +53,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         /*xu ly logic , kiem tra(( userid trong sqllite ton tai) va ( => den man roleoption
-
-
          */
-
+        // Kiểm tra xem session tồn tại, nếu tồn tại thì vào thẳng MainActivity
+        SessionManager sessionManager = new SessionManager(this);
+        if (sessionManager.getGoogleId() != null) {
+            // Nếu Google ID tồn tại trong session, chuyển sang MainActivity
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return; // Kết thúc onCreate để tránh tiếp tục xử lý logic đăng nhập
+        }
         auth = FirebaseAuth.getInstance();
         googleSignInButton = findViewById(R.id.google_sign_in_button);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

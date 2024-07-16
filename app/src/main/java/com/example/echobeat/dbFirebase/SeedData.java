@@ -137,16 +137,17 @@ public class SeedData {
     private void seedArtists(int count) {
         for (int i = 1; i <= count; i++) {
             int artistId = i;
-            String artistName = generateRandomName(10); // Tạo tên nghệ sĩ ngẫu nhiên với độ dài 10
+            String userName = generateRandomName(10); // Tạo tên nghệ sĩ ngẫu nhiên với độ dài 10
             String email = "artist" + artistId + "@example.com";
             String artistImage = "https://scontent.fdad3-6.fna.fbcdn.net/v/t1.6435-9/79315938_783274145470099_8800946627310256128_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=53a332&_nc_ohc=zSKOv4nh2twQ7kNvgH31r0r&_nc_ht=scontent.fdad3-6.fna&oh=00_AYAH1JZ5T-ZhAaaL-QBzYPUITdIiGkAIoLbICToy53CXdw&oe=66B040EA";
-            String password = "password";
+
             int userId = getRandomUserId();
+            String artistName =generateRandomName(10);;
             String bio = "Artist " + artistId + " bio";
             List<String> songIds = Arrays.asList(String.valueOf(i), String.valueOf(i + 1), String.valueOf(i + 2)); // Example songIds
             String genre = (i % 2 == 0) ? "Rock" : "Pop";
 
-            Artist artist = new Artist(artistId + "", artistName, email, artistImage, 1, "asdhjfgahjsdgfhjsadgfhjasg", password, userId + "", bio, songIds, genre);
+            Artist artist = new Artist(artistId + "", userName, email, artistImage, 1, "asdhjfgahjsdgfhjsadgfhjasg", userId + "",artistName, bio, songIds, genre);
             artistHelper.addData("artists", artist);
         }
     }

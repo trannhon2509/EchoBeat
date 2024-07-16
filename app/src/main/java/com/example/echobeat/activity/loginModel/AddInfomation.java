@@ -2,10 +2,12 @@ package com.example.echobeat.activity.loginModel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +22,9 @@ import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.session.SessionManager;
 import com.example.echobeat.modelSqlite.Artist;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 public class AddInfomation extends AppCompatActivity {
 
@@ -27,10 +32,13 @@ public class AddInfomation extends AppCompatActivity {
     private EditText et_name;
 
     private MultiAutoCompleteTextView et_biography;
+
+    private Spinner spinnerMusicGenre;
     private Button next;
     private ArtistRepository artistRepository;
     private UserRepository userRepository;
     private FirebaseHelper<com.example.echobeat.modelFirebase.User> userHelper;
+    private FirebaseHelper<com.example.echobeat.modelFirebase.User> artistHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +57,12 @@ public class AddInfomation extends AppCompatActivity {
         et_name = findViewById(R.id.et_name);
         et_biography = findViewById(R.id.et_biography);
         next = findViewById(R.id.btn_next);
+
+        // Set up Spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.music_genres_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMusicGenre.setAdapter(adapter);
 
         SessionManager sessionManager = new SessionManager(this);
         String googleId = sessionManager.getGoogleId();
@@ -69,9 +83,10 @@ public class AddInfomation extends AppCompatActivity {
             // Get input values
             String name = et_name.getText().toString().trim();
             String biography = et_biography.getText().toString().trim();
+            String selectedGenre = spinnerMusicGenre.getSelectedItem().toString();
 
             // Validate input
-            if (name.isEmpty() || biography.isEmpty()) {
+            if (name.isEmpty() || biography.isEmpty()||selectedGenre.isEmpty()) {
                 Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -92,7 +107,13 @@ public class AddInfomation extends AppCompatActivity {
             artist.setArtistName(name);
             artist.setBiography(biography);
             //luu ca si vao fire base
-            //...................
+            String artistName =name;
+            String bio = biography;
+            List<String> songIds = null;
+            String genre =selectedGenre;
+            com.example.echobeat.modelFirebase.Artist artistfb = new com.example.echobeat.modelFirebase.Artist(userId + "", userName, email, image, 2, googleId, userId + "",artistName, bio, songIds, genre);
+            artistHelper.addData("artists", artistfb);
+
             // luu ca si vao sql lite
             boolean isSaved = artistRepository.saveArtist(artist);
             if (isSaved) {

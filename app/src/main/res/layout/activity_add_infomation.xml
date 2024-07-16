@@ -83,7 +83,7 @@
     <MultiAutoCompleteTextView
         android:id="@+id/et_biography"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="190dp"
         android:hint="Enter your biography"
         android:background="@drawable/edit_text_background"
         android:padding="12dp"
@@ -96,6 +96,33 @@
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF" />
 
+    <!-- Music Genre Label -->
+    <TextView
+        android:id="@+id/tv_music_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Music Genre"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@id/et_biography"
+        android:layout_marginTop="32dp"/>
+
+    <!-- Music Genre Spinner -->
+    <Spinner
+        android:id="@+id/spinner_music_genre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_music_genre"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:spinnerMode="dropdown"
+        android:dropDownVerticalOffset="12dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF" />
+
+
     <!-- Next Button -->
     <Button
         android:id="@+id/btn_next"
@@ -107,6 +134,6 @@
         android:textSize="23sp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/et_biography"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="150dp"/>
 
 </RelativeLayout>

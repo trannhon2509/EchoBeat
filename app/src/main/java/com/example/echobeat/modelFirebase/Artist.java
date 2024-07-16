@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Artist extends User {
     private String artistId;
+
+    private String artistName;
     private String bio;
     private List<String> songIds;
     private String musicGenre;
@@ -13,14 +15,22 @@ public class Artist extends User {
         super();
     }
 
-    public Artist(String userId, String username, String email, String profilePicture, int roleId, String googleId, String password, String artistId, String bio, List<String> songIds, String musicGenre) {
+    public Artist(String userId, String username, String email, String profilePicture, int roleId, String googleId, String artistId,String artistName, String bio, List<String> songIds, String musicGenre) {
         super(userId, username, email, profilePicture, roleId, googleId);
         this.artistId = artistId;
+        this.artistName = artistName;
         this.bio = bio;
         this.songIds = songIds;
         this.musicGenre = musicGenre;
     }
 
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
     public String getArtistId() {
         return artistId;
     }

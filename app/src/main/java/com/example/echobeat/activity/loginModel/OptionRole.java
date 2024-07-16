@@ -19,14 +19,9 @@ import com.example.echobeat.modelSqlite.User;
 import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.session.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 public class OptionRole extends AppCompatActivity {
     private ImageView logout;
@@ -88,15 +83,9 @@ public class OptionRole extends AppCompatActivity {
         mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
             Toast.makeText(OptionRole.this, "Signed Out", Toast.LENGTH_SHORT).show();
 
-            // Xóa thông tin người dùng đã lưu trữ trong SharedPreferences
-//            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.remove("fullname");
-//            editor.remove("email");
-//            editor.remove("avatar");
-//            editor.remove("role");
-//            editor.remove("googleId");
-//            editor.apply();
+            //đặt lại session
+            SessionManager sessionManager = new SessionManager(this);
+            sessionManager.clearSession();
 
             // Chuyển về màn hình đăng nhập
             Intent intent = new Intent(OptionRole.this, LoginActivity.class);

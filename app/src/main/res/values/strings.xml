@@ -34,5 +34,17 @@
     <string name="title_Library">Library</string>
     <string name="title_home">Home</string>
 
+    <string-array name="music_genres_array">
+        <item>Rock</item>
+        <item>Pop</item>
+        <item>Jazz</item>
+        <item>Classical</item>
+        <item>Hip-Hop</item>
+        <item>Electronic</item>
+        <item>Country</item>
+        <item>RandB</item>
+        <item>ALL</item>
+    </string-array>
+
     <string name="default_web_client_id">369502477444-uju6iqrhkllvn4qthp6c00o6mkqrekln.apps.googleusercontent.com</string>
 </resources>
