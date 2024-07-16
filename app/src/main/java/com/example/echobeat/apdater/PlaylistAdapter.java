@@ -35,6 +35,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     public void onBindViewHolder(@NonNull PlaylistViewHolder holder, int position) {
         Playlist playlist = playlists.get(position);
         holder.playlistName.setText(playlist.getName());
+//        holder.userId.setText(playlist.getUserId());
         // You can use a library like Glide or Picasso to load images from URLs
         // Glide.with(context).load(playlist.getPicturePlaylist()).into(holder.playlistImage);
     }
@@ -47,11 +48,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     public static class PlaylistViewHolder extends RecyclerView.ViewHolder {
 
         TextView playlistName;
+//        TextView userId;
         ImageView playlistImage;
 
         public PlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
             playlistName = itemView.findViewById(R.id.playlist_name);
+//            userId= itemView.findViewById(R.id.userId);
             playlistImage = itemView.findViewById(R.id.playlist_image);
         }
     }
