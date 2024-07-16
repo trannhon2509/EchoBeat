@@ -14,15 +14,24 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.bumptech.glide.Glide;
+import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
+import com.example.echobeat.activity.loginModel.OptionRole;
 import com.example.echobeat.dbFirebase.FirebaseHelper;
 import com.example.echobeat.modelFirebase.Song;
 import com.example.echobeat.repository.UserRepository;
 import com.example.echobeat.session.SessionManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -41,8 +50,10 @@ public class UploadSong extends AppCompatActivity {
     private Uri songUri;
     private Uri imageUri;
     private FirebaseHelper<Song> firebaseHelper;
-    private final UserRepository userRepository = new UserRepository(getApplicationContext());
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +66,9 @@ public class UploadSong extends AppCompatActivity {
         etSongTitle = findViewById(R.id.etSongTitle);
         progressBar = findViewById(R.id.progressBar);
         ivSongImage = findViewById(R.id.ivSongImage);
+        drawerLayout = findViewById(R.id.drawer_artist_uploadSong);
+        navigationView = findViewById(R.id.nav_view_artist);
+        setupDrawer();
 
         firebaseHelper = new FirebaseHelper<>();
 
@@ -82,6 +96,38 @@ public class UploadSong extends AppCompatActivity {
                 }
             }
         });
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.menu_uploadAlbum) {
+                // Handle settings click
+                startActivity(new Intent(UploadSong.this, UploadAlbum.class));
+            } else if (itemId == R.id.menu_uploadSong) {
+                // Handle login click
+                startActivity(new Intent(UploadSong.this, UploadSong.class));
+            } else if (itemId == R.id.menu_profile) {
+                // Handle register click
+                // Example: startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            }
+            else if (itemId == R.id.menu_logout) {
+                // Handle register click
+                // Example: startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            }
+            // Close the drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
+    }
+
+    private void setupDrawer() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
     }
 
     private void openFileChooser(int requestCode) {

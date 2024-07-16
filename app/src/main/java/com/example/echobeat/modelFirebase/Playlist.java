@@ -7,6 +7,8 @@ public class Playlist {
     private String description;
     private String coverImage;
 
+
+
     // Constructors, getters, and setters
     public Playlist() {}
 
