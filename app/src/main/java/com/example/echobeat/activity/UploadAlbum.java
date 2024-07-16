@@ -15,7 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +31,7 @@ import com.example.echobeat.modelFirebase.Song;
 import com.example.echobeat.repository.UserRepository;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -52,11 +57,15 @@ public class UploadAlbum extends AppCompatActivity {
     private SongsAdapter songsAdapter;
     private UserRepository userRepository;
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private NavigationView navigationView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_album);
-
         etAlbumTitle = findViewById(R.id.etAlbumTitle);
         etSongTitle = findViewById(R.id.etSongTitle); // Initialize etSongTitle
         btnSelectSong = findViewById(R.id.btnSelectSong);
@@ -73,6 +82,10 @@ public class UploadAlbum extends AppCompatActivity {
         songsAdapter = new SongsAdapter(songs);
         rvSelectedSongs.setLayoutManager(new LinearLayoutManager(this));
         rvSelectedSongs.setAdapter(songsAdapter);
+
+        drawerLayout = findViewById(R.id.drawer_artist_uploadAlbum);
+        navigationView = findViewById(R.id.nav_view_artist_album);
+        setupDrawer();
 
         btnSelectSong.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,8 +111,41 @@ public class UploadAlbum extends AppCompatActivity {
                 }
             }
         });
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.menu_uploadAlbum) {
+                // Handle settings click
+                startActivity(new Intent(UploadAlbum.this, UploadAlbum.class));
+            } else if (itemId == R.id.menu_uploadSong) {
+                // Handle login click
+                startActivity(new Intent(UploadAlbum.this, UploadSong.class));
+            } else if (itemId == R.id.menu_profile) {
+                // Handle register click
+                // Example: startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            }
+            else if (itemId == R.id.menu_logout) {
+                // Handle register click
+                // Example: startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+
+            }
+
+            // Close the drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
     }
 
+    private void setupDrawer() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+    }
     private void openFileChooser(int requestCode) {
         Intent intent = new Intent();
         if (requestCode == PICK_SONG_REQUEST) {

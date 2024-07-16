@@ -17,6 +17,8 @@ public class Song implements Parcelable {
     private int playCount;
     private String albumId;  // Field for album ID
 
+    private String playlistId;
+
     // Constructors
     public Song() {}
 

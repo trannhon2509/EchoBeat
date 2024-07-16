@@ -79,7 +79,7 @@ public class OptionRole extends AppCompatActivity {
         });
     }
 
-    private void signOut() {
+    public void signOut() {
         auth.signOut();
         mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
             Toast.makeText(OptionRole.this, "Signed Out", Toast.LENGTH_SHORT).show();
