@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
 import com.example.echobeat.activity.LoginActivity;
+
 import com.example.echobeat.dbFirebase.FirebaseHelper;
 import com.example.echobeat.modelSqlite.User;
 import com.example.echobeat.repository.UserRepository;

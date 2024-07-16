@@ -1,4 +1,4 @@
-package com.example.echobeat.firebase;
+package com.example.echobeat.dbFirebase;
 
 import android.util.Log;
 
@@ -255,9 +255,6 @@ public class FirebaseHelper<T> {
                     }
                 });
     }
-
-<<<<<<<<< Temporary merge branch 1
-=========
     public void getRandomSongs(final int count, final DataCallback<Song> callback) {
         db.collection("songs")
                 .get()

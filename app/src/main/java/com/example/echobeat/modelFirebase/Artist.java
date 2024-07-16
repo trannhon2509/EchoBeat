@@ -1,5 +1,10 @@
 package com.example.echobeat.modelFirebase;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public class Artist extends User implements Parcelable {

@@ -14,8 +14,9 @@ import android.view.ViewGroup;
 
 import com.example.echobeat.R;
 import com.example.echobeat.apdater.PlaylistAdapter;
-import com.example.echobeat.firebase.FirebaseHelper;
-import com.example.echobeat.model.Playlist;
+import com.example.echobeat.dbFirebase.FirebaseHelper;
+import com.example.echobeat.modelFirebase.Playlist;
+
 
 import java.util.ArrayList;
 import java.util.List;

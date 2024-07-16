@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.echobeat.R;
+
 import com.example.echobeat.dbFirebase.FirebaseHelper;
 import com.example.echobeat.modelFirebase.Song;
 
@@ -299,7 +300,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void playPreviousSong() {
         if (currentSongIndex <= 0) {
             // Fetch new set of 5 random songs for previous songs
-            firebaseHelper.getRandomSongs(5, new FirebaseHelper.DataCallback<Song>() {
+            firebaseHelper.getRandomSongs(5,  new FirebaseHelper.DataCallback<Song>() {
                 @Override
                 public void onCallback(List<Song> data) {
                     if (data != null && !data.isEmpty()) {

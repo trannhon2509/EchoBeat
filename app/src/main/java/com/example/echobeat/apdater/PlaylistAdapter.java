@@ -12,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echobeat.R;
-import com.example.echobeat.model.Playlist;
+import com.example.echobeat.modelFirebase.Playlist;
+
 
 import java.util.List;
 
