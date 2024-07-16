@@ -15,6 +15,8 @@ public class Artist extends User implements Parcelable {
     private List<String> songIds;
     private String musicGenre;
 
+
+
     // Constructors, getters, and setters
     public Artist() {
         super();

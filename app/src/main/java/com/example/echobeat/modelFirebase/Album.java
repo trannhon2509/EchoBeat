@@ -15,6 +15,8 @@ public class Album implements Parcelable {
     private String coverImage;
     private int genreId;
 
+
+
     // Constructors, getters, and setters
     public Album() {}
 

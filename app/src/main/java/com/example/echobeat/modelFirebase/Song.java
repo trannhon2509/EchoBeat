@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-public class Song  implements Parcelable {
+public class Song implements Parcelable {
     private String songId;
     private String userId;
     private String songUrl;
@@ -15,14 +15,25 @@ public class Song  implements Parcelable {
     private String pictureSong;
     private String categoryId;
     private int playCount;
+    private String albumId;  // Field for album ID
 
-    // Constructors, getters, and setters
+    // Constructors
     public Song() {}
+
     protected Song(Parcel in) {
+        songId = in.readString();
+        userId = in.readString();
+        songUrl = in.readString();
         title = in.readString();
+        duration = in.readInt();
+        releaseYear = new Date(in.readLong());  // Read and convert long to Date
         pictureSong = in.readString();
+        categoryId = in.readString();
+        playCount = in.readInt();
+        albumId = in.readString();  // Read album ID
     }
-    public Song(int playCount, String songId, String userId, String songUrl, String title, int duration, Date releaseYear, String pictureSong, String categoryId) {
+
+    public Song(String songId, String userId, String songUrl, String title, int duration, Date releaseYear, String pictureSong, String categoryId, int playCount, String albumId) {
         this.songId = songId;
         this.userId = userId;
         this.songUrl = songUrl;
@@ -32,8 +43,10 @@ public class Song  implements Parcelable {
         this.pictureSong = pictureSong;
         this.categoryId = categoryId;
         this.playCount = playCount;
+        this.albumId = albumId;
     }
 
+    // Getters and Setters
     public String getSongId() {
         return songId;
     }
@@ -106,10 +119,26 @@ public class Song  implements Parcelable {
         this.playCount = playCount;
     }
 
+    public String getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(String albumId) {
+        this.albumId = albumId;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(songId);
+        dest.writeString(userId);
+        dest.writeString(songUrl);
         dest.writeString(title);
+        dest.writeInt(duration);
+        dest.writeLong(releaseYear != null ? releaseYear.getTime() : -1L);  // Convert Date to long
         dest.writeString(pictureSong);
+        dest.writeString(categoryId);
+        dest.writeInt(playCount);
+        dest.writeString(albumId);  // Write album ID
     }
 
     @Override

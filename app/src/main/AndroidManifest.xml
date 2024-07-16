@@ -24,6 +24,11 @@
             android:exported="false">
 
         </activity>
+        <activity
+            android:name=".activity.UploadAlbum"
+            android:exported="false">
+
+        </activity>
 
         <activity
             android:name=".activity.SongShareActivity"
