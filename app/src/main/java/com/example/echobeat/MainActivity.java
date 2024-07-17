@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        SeedData seedData = new SeedData();
-        seedData.seedAllData();
+         //Khong seed data nua
+//        SeedData seedData = new SeedData();
+//        seedData.seedAllData();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -68,15 +68,15 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.navigation_search) {
                 selectedFragment = new SearchFragment();
             } else if (itemId == R.id.navigation_library) {
-//                SessionManager sessionManager = new SessionManager(this);
-//                if (sessionManager.getGoogleId() == null) {
-//                    // Nếu Google ID k tồn tại trong session, chuyển sang Login
-//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                    startActivity(intent);
-//                }else {
-//                    selectedFragment = new LibraryFragment();
-//                }
-                selectedFragment = new LibraryFragment();
+                SessionManager sessionManager = new SessionManager(this);
+                if (sessionManager.getGoogleId() == null) {
+                    // Nếu Google ID k tồn tại trong session, chuyển sang Login
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    selectedFragment = new LibraryFragment();
+                }
+//                selectedFragment = new LibraryFragment();
             }
 
             // Replace the current fragment with the selected one

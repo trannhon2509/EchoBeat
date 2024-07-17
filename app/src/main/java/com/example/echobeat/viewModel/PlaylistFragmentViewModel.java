@@ -10,6 +10,7 @@ import java.util.List;
 
 public class PlaylistFragmentViewModel extends ViewModel {
     private final MutableLiveData<List<Song>> songs = new MutableLiveData<>();
+    private boolean songsLoaded = false;
 
     public LiveData<List<Song>> getSongs() {
         return songs;
@@ -17,9 +18,11 @@ public class PlaylistFragmentViewModel extends ViewModel {
 
     public void setSongs(List<Song> songList) {
         songs.setValue(songList);
+        songsLoaded = true;
     }
+
     public boolean isSongsLoaded() {
-        return songs.getValue() != null;
+        return songsLoaded;
     }
 
 }

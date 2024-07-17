@@ -2,6 +2,7 @@ package com.example.echobeat.apdater;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.echobeat.MainActivity;
 import com.example.echobeat.R;
 import com.example.echobeat.modelFirebase.Playlist;
 
@@ -36,9 +38,16 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     public void onBindViewHolder(@NonNull PlaylistViewHolder holder, int position) {
         Playlist playlist = playlists.get(position);
         holder.playlistName.setText(playlist.getName());
-//        holder.userId.setText(playlist.getUserId());
-        // You can use a library like Glide or Picasso to load images from URLs
-        // Glide.with(context).load(playlist.getPicturePlaylist()).into(holder.playlistImage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+// xu ly khi click vao playlist -- Doi SettingsActivity thanh LibraryActivity khi da merge code cua Luong
+                Intent intent = new Intent(context, MainActivity.class);
+//                intent.putExtra("playlist_id", playlist.getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

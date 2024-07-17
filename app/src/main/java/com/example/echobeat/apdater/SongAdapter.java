@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.example.echobeat.R;
 import com.example.echobeat.modelFirebase.Playlist;
 import com.example.echobeat.modelFirebase.Song;
 import com.example.echobeat.modelSqlite.ListPlaylist;
+import com.example.echobeat.repository.SongRepository;
 
 import java.util.List;
 
@@ -26,10 +28,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     private final List<Song> songs;
 
     private OnItemClickListener listener;
+    private final SongRepository songRepository;
 
     public SongAdapter(Context context, List<Song> songs) {
         this.context = context;
         this.songs = songs;
+        this.songRepository = new SongRepository(context);
     }
 
     @NonNull
@@ -52,6 +56,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                         .placeholder(R.drawable.ic_loading) // Placeholder image while loading
                         .error(R.drawable.ic_error)) // Error image if loading fails
                 .into(holder.songImage);
+
+        // Handle button click
+        holder.btnAddToPlaylist.setOnClickListener(v -> {
+            songRepository.addSongToPlaylist(song);
+            if (listener != null) {
+                listener.onItemClick(song);
+            }
+            Toast.makeText(context, "Added to Playlist", Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
@@ -72,6 +85,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION && listener != null) {
                         listener.onItemClick(songs.get(position));
